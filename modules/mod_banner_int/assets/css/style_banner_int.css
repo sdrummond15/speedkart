@@ -1,0 +1,68 @@
+#banner-int {
+    width: 100%;
+    display: table;
+    background: url("../../../../images/banners/backbanner.jpg") no-repeat center;
+    background-size: cover;
+    background-position: right bottom;
+}
+
+#banner-int > div {
+    width: 100%;
+    display: table;
+}
+
+.banner-int {
+    width: 1170px;
+    margin: auto;
+    height: 400px;
+    min-height: 200px;
+    position: relative;
+}
+
+.banner-int h1 {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    -ms-transform: translate(-50%, -50%); /* IE 9 */
+    -webkit-transform: translate(-50%, -50%); /* Safari */
+    transform: translate(-50%, -50%);
+    font-family: 'daggersquare_oblique';
+    font-size: 50px;
+    color: #FFF;
+    margin: 0;
+    display: table;
+    max-width: 90%;
+    text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+    .banner-int {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+}
+
+@media screen and (max-width: 768px) {
+    .banner-int {
+        height: 300px;
+    }
+
+    .banner-int h1 {
+        font-size: 40px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .banner-int {
+        height: 250px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .banner-int h1 {
+        font-size: 30px;
+    }
+}

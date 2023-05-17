@@ -1,0 +1,82 @@
+.calendar {
+    width: 100%;
+    display: table;
+}
+
+.calendar h1 {
+    color: #FFF;
+    font-family: 'daggersquare_oblique';
+    font-size: 30px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.calendar h2 {
+    font-family: 'daggersquare_oblique';
+    font-size: 24px;
+    color: #FFF;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.calendar table {
+    background-size: 100%;
+    background-position-y: center;
+    width: 100%;
+}
+
+.calendar thead {
+    background-color: #ca2302;
+}
+
+.calendar thead td {
+    text-align: center;
+    font-family: 'daggersquare';
+    font-size: 18px;
+    padding: 5px 10px;
+    line-height: 1.6;
+}
+
+.calendar tbody td {
+    font-family: 'open_sanslight';
+    padding: 5px 10px;
+    line-height: 1.6;
+}
+
+@media screen and (max-width: 1000px) {
+    .calendar table,
+    .calendar thead td {
+        font-size: 12px;
+    }
+
+    .calendar table tr td {
+        padding: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .calendar table,
+    .calendar thead td {
+        font-size: 8px;
+    }
+
+    .calendar h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .calendar h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .calendar h1 {
+        font-size: 20px;
+    }
+
+    .calendar h2 {
+        font-size: 16px;
+    }
+}

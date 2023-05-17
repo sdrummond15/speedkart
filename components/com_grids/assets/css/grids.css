@@ -1,0 +1,130 @@
+.grids {
+    width: 100%;
+    display: table;
+}
+
+.local {
+    width: 100%;
+    display: table;
+    margin-bottom: 40px;
+}
+
+.local h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 30px;
+    margin-bottom: 40px;
+}
+
+.local h2 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.local h3 {
+    font-family: 'open_sansregular';
+    color: #FFF;
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: normal;
+}
+
+.img_local {
+    width: 300px;
+    float: left;
+    margin-right: 60px;
+    line-height: 0;
+}
+
+.img_local img {
+    width: 100%;
+}
+
+.gridmontado {
+    width: 100%;
+    padding: 40px 0;
+    display: table;
+    background: url('../../../../images/pista.jpg') repeat;
+    background-size: 100% auto;
+}
+
+.posicao {
+    width: 30%;
+    margin: 0 10% 30px 10%;
+    float: left;
+    display: table;
+}
+
+.posicao:nth-child(even) {
+    margin-top: 50px;
+}
+
+.colocacao {
+    width: 100%;
+    -webkit-clip-path: polygon(0% 0%, 0% 100%, 5% 100%, 5% 70%, 95% 70%, 95% 100%, 100% 100%, 100% 0%);
+    clip-path: polygon(0% 0%, 0% 100%, 5% 100%, 5% 70%, 95% 70%, 95% 100%, 100% 100%, 100% 0%);
+    background-color: #FFF;
+}
+
+.colocacao p {
+    font-family: 'daggersquare_oblique';
+    color: red;
+    padding: 5px 0 20px 0;
+    text-align: center;
+}
+
+.pilotopos {
+    text-align: center;
+    padding-top: 5px;
+}
+
+.photo {
+    width: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    border: 2px solid #FFF;
+    border-radius: 5px;
+    background-size: cover;
+}
+
+.photo img {
+    width: 100%;
+}
+
+.voltar {
+    text-align: center;
+    padding-top: 30px;
+    width: 100%;
+    display: table;
+}
+
+@media screen and (max-width: 768px) {
+    .img_local {
+        margin-right: 40px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .img_local {
+        width: 240px;
+        float: none;
+        margin: 0 auto 20px auto;
+    }
+    .local h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .local h2 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .local h3 {
+        text-align: center;
+    }
+    .posicao {
+        width: 40%;
+        margin: 0 5% 30px 5%;
+    }
+}

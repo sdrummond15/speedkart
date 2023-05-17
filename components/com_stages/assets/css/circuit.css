@@ -1,0 +1,91 @@
+.circuits {
+    display: table;
+    width: 100%;
+}
+
+.circuits h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 30px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.circuitimg {
+    width: 30%;
+    float: left;
+    background-size: 80% !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-color: #FFF !important;
+    border-radius: 20px;
+}
+
+.detalhescircuit {
+    width: calc(70% - 40px);
+    margin-left: 40px;
+    float: left;
+}
+
+.detalhescircuit h2 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.detalhescircuit p {
+    font-family: 'open_sanslight';
+    color: #FFF;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.voltar {
+    text-align: center;
+    padding-top: 30px;
+    width: 100%;
+    display: table;
+}
+
+.voltar a:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+    .circuits h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .circuitimg {
+        width: 45%;
+    }
+
+    .detalhescircuit {
+        width: calc(55% - 20px);
+        margin-left: 20px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .circuits h1 {
+        font-size: 20px;
+    }
+
+    .circuitimg {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 20px auto;
+        display: table;
+        float: none;
+    }
+
+    .detalhescircuit {
+        width: auto;
+        display: table;
+        margin: auto;
+        float: none;
+    }
+}

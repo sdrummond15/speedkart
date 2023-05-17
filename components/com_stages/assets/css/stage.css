@@ -1,0 +1,168 @@
+.stagedetail h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 30px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.stagedetail table {
+    text-align: center;
+    margin: auto;
+    width: 100%;
+    line-height: 1.6;
+}
+
+.stagedetail table thead {
+    font-family: 'daggersquare';
+}
+
+.stagedetail table tbody {
+    font-family: 'open_sansregular';
+}
+
+.stagedetail table tr td {
+    padding: 3px 8px;
+}
+
+.negativo {
+    background-color: rgba(255, 0, 0, 0.4);
+}
+
+.verde {
+    background-color: green;
+}
+
+.azul {
+    background-color: #dfb905;
+}
+
+.bests {
+    width: 100%;
+    display: table;
+    margin: 60px auto;
+    text-align: center;
+}
+
+.best {
+    width: calc(20% - 20px);
+    display: inline-block;
+    text-align: center;
+    margin: 0 10px 40px 10px;
+    padding: 10px 0;
+    border-radius: 10px;
+    background-color: #700000;
+}
+
+.best h2 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.best:first-child h2 {
+    padding-top: 10px;
+    font-size: 24px;
+    margin-bottom: 0px;
+}
+
+.best h4 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 16px;
+    margin: 5px 0;
+    text-align: center;
+}
+
+.best p {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    padding-top: 5px;
+    font-size: 14px;
+    text-align: center;
+    min-height: 40px;
+}
+
+.best h3 {
+    font-family: 'open_sansregular';
+    color: #FFF;
+    font-size: 18px;
+    margin: 5px 0 !important;
+    text-align: center;
+    font-weight: normal;
+}
+
+.img_best {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.img_best a {
+    width: 100%;
+    height: 100%;
+    display: table;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.punidos {
+    width: 100%;
+    display: table;
+}
+
+.punidos table {
+    width: 100%;
+}
+
+.voltar {
+    text-align: center;
+    padding-top: 30px;
+    width: 100%;
+    display: table;
+}
+
+.voltar a:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .stagedetail table {
+        font-size: 12px;
+    }
+
+    .stagedetail table tr td {
+        padding: 0;
+    }
+
+    .best {
+        width: calc(25% - 20px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .stagedetail table {
+        font-size: 8px;
+    }
+
+    .stagedetail h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .best {
+        width: calc(33.33% - 20px);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .stagedetail h1 {
+        font-size: 20px;
+    }
+
+    .best {
+        width: calc(50% - 20px);
+    }
+}

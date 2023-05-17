@@ -1,0 +1,105 @@
+.pilotdetail h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 30px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.detail_imgkart {
+    width: 30%;
+    display: inline-block;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    border-radius: 20px;
+    vertical-align: top;
+}
+
+.details {
+    width: calc(70% - 40px);
+    display: inline-block;
+    margin-left: 40px;
+}
+
+.details h2 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.details h3 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 20px;
+    margin: 50px 0 20px 0 !important;
+}
+
+.details p {
+    font-family: 'open_sanslight';
+    color: #FFF;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.voltar {
+    text-align: center;
+    padding-top: 30px;
+    width: 100%;
+    display: table;
+}
+
+.voltar a:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 768px) {
+    .pilotdetail h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .detail_imgkart {
+        width: 45%;
+    }
+
+    .details {
+        width: calc(55% - 20px);
+        margin-left: 20px;
+    }
+
+    .details h2 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .details p {
+        font-size: 14px;
+    }
+
+    .details h3 {
+        font-size: 18px;
+        margin: 20px 0 15px 0 !important;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .pilotdetail h1 {
+        font-size: 20px;
+    }
+
+    .detail_imgkart {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 20px auto;
+        display: table;
+    }
+
+    .details {
+        width: auto;
+        display: table;
+        margin: auto;
+    }
+}

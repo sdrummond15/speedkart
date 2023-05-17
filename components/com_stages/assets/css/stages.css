@@ -1,0 +1,106 @@
+.all_stages {
+    display: table;
+    width: 100%;
+    text-align: center;
+}
+
+.all_stages h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 30px;
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.single_stage {
+    width: calc(33.33% - 32px);
+    display: inline-block;
+    margin: 0 15px 40px 15px;
+    border: 1px solid #FFF;
+    border-radius: 10px;
+}
+
+.single_stage h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 20px;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.single_stage h2,
+.single_stage h2 a {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+    min-height: 42px;
+}
+
+.single_stage h2 a:hover {
+    color: #da0100;
+}
+
+.img_kartodromo {
+    width: 100%;
+    background-color: #FFF;
+}
+
+.img_kartodromo a {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: 80%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.img_podio {
+    width: 100%;
+    background-color: #FFF;
+}
+
+.img_podio a {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+p.qualifica {
+    margin: 8px;
+    font-family: 'open_sansregular';
+}
+
+p.qualifica a:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+a.detail {
+    display: table;
+    margin: 20px auto;
+    text-decoration: none;
+}
+
+a.detail:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1000px) {
+    .single_stage {
+        width: calc(50% - 32px);
+        max-width: 320px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .single_stage {
+        width: calc(100% - 32px);
+        max-width: 320px;
+    }
+}

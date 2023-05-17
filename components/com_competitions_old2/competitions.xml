@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5" method="upgrade">
+    <name>com_competitions</name>
+    <author>Wanderson ALves</author>
+    <creationDate>02/01/2018</creationDate>
+    <copyright>(C)2018 SDrummond.</copyright>
+    <license>GNU General Public License version 1 or later; see LICENSE.txt</license>
+    <authorEmail>wanderson@sdrummond.com.br</authorEmail>
+    <authorUrl>www.sdrummond.com.br</authorUrl>
+    <version>3.0</version>
+    <description>COM_COMPETITIONS_XML_DESCRIPTION</description>
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+    <files folder="site">
+        <folder>controllers</folder>
+        <folder>helpers</folder>
+        <folder>languages</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+        <folder>competition.php</folder>
+        <folder>controller.php</folder>
+        <folder>index.html</folder>
+        <folder>router.php</folder>
+    </files>
+    <languages folder="site">
+        <language tag="pt-BR">language/pt-BR.com_competitions.ini</language>
+    </languages>
+    <administration>
+        <menu img="../media/com_competitions/images/menu/competicao.png">com_competitions</menu>
+        <submenu>
+            <menu link="option=com_competitions&amp;view=results" view="results" img="../media/com_competitions/images/menu/resultado.png" alt="Competitions/Results">com_competitions_results</menu>
+            <menu link="option=com_competitions&amp;view=pilots" view="pilots" img="../media/com_competitions/images/menu/piloto.png" alt="Competitions/Pilots">com_competitions_pilots</menu>
+            <menu link="option=com_competitions&amp;view=stages" view="stages" img="../media/com_competitions/images/menu/etapa.png" alt="Competitions/Stages">com_competitions_stages</menu>
+            <menu link="option=com_competitions&amp;view=championships" view="championships" img="../media/com_competitions/images/menu/campeonato.png" alt="Competitions/Championships">com_competitions_championships</menu>
+            <menu link="option=com_competitions&amp;view=kartings" view="kartings" img="../media/com_competitions/images/menu/kartodromo.png" alt="Competitions/Kartings">com_competitions_kartings</menu>
+            <menu link="option=com_competitions&amp;view=circuits" view="circuits" img="../media/com_competitions/images/menu/circuito.png" alt="Competitions/Circuits">com_competitions_circuits</menu>
+            <menu link="option=com_competitions&amp;view=teams" view="teams" img="../media/com_competitions/images/menu/equipe.png" alt="Competitions/Teams">com_competitions_teams</menu>
+        </submenu>
+        <files folder="admin">
+            <folder>controllers</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>languages</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+            <filename>competition.php</filename>
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
+            <filename>index.html</filename>
+        </files>
+        <languages folder="admin">
+            <language tag="pt-BR">language/pt-BR.competitions.ini</language>
+            <language tag="pt-BR">language/pt-BR.competitions.sys.ini</language>
+        </languages>
+    </administration>
+</extension>

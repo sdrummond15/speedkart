@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+        type="module"
+        version="3"
+        client="site"
+        method="upgrade">
+    <name>mod_kartings</name>
+    <author>Wanderson Alves</author>
+    <creationDate>03/01/2018</creationDate>
+    <copyright>Copyright (C) - 2018 - Sdrummond Soluções em Tecnologia. All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <authorEmail>wanderson@sdrummond.com.br</authorEmail>
+    <authorUrl>www.sdrummond.com.br</authorUrl>
+    <version>1.0</version>
+    <description>MOD_KARTINGS_XML_DESCRIPTION</description>
+    <files>
+        <filename module="mod_kartings">mod_kartings.php</filename>
+        <folder>tmpl</folder>
+        <filename>helper.php</filename>
+        <filename>index.html</filename>
+        <filename>mod_kartings.xml</filename>
+    </files>
+</extension>

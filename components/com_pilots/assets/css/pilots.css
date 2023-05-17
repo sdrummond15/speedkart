@@ -1,0 +1,87 @@
+.pilots {
+    display: table;
+}
+
+.pilots h1 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.pilot {
+    width: calc(20% - 20px);
+    display: inline-block;
+    text-align: center;
+    margin: 0 10px 40px 10px;
+    padding: 10px 0;
+    border-radius: 10px;
+    background-color: #700000;
+}
+
+.pilot h1 {
+    font-family: 'daggersquare';
+    color: #FFF;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.pilotimg {
+    width: 100%;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+    margin: 10px 0;
+}
+
+.pilot h2 {
+    font-family: 'daggersquare_oblique';
+    color: #FFF;
+    font-size: 18px;
+    padding-top: 5px;
+    height: 38px;
+}
+
+.pilot a {
+    font-family: 'daggersquare_oblique';
+    font-size: 14px;
+    color: #FFF;
+}
+
+.pilot a:hover {
+    text-decoration: none;
+    color: #f0c63a;
+}
+
+@media screen and (max-width: 1000px) {
+    .pilot {
+        width: calc(25% - 20px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .pilots h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+    .pilot {
+        width: calc(33.33% - 20px);
+    }
+    .pilot h1{
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .pilots h1 {
+        font-size: 20px;
+    }
+    .pilot {
+        width: calc(50% - 20px);
+    }
+    .pilot h1{
+        font-size: 14px;
+    }
+}

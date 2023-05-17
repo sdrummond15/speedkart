@@ -1,0 +1,75 @@
+.qualifpilot {
+    display: table;
+    width: 100%;
+}
+
+.qualifpilot h1 {
+    font-family: 'daggersquare_oblique', Monospace;
+    text-align: center;
+    margin: 0 0 60px 0;
+    color: #FFF;
+}
+
+.qualifpilot p {
+    margin: 0 0 8px 0;
+}
+
+.qualifpilot a {
+    display: table;
+    margin: 30px auto 0 auto;
+    color: #FFF;
+    font-family: 'daggersquare_oblique', Monospace;
+}
+
+.qualifpilot a:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+.imagepilot {
+    float: right;
+    width: 360px;
+    height: 250px;
+    margin: 0 30px 0 60px;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+@media screen and (max-width: 768px) {
+    .imagepilot {
+        width: 300px;
+        height: 200px;
+        display: table;
+        margin: 0 auto 20px auto;
+        float: none;
+    }
+
+    .qualifpilot {
+        width: auto;
+        margin: auto;
+    }
+
+    .qualifpilot h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .qualifpilot a {
+        margin: 15px auto 0 auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .qualifpilot h1 {
+        font-size: 20px;
+    }
+
+    .qualifpilot p {
+        font-size: 16px;
+    }
+
+    .qualifpilot a {
+        font-size: 14px;
+    }
+}
