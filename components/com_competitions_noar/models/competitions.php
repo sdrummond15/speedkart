@@ -13,7 +13,7 @@ class CompetitionsModelCompetitions extends JModelLegacy
 
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        $query->select('p.id AS id_piloto, p.name AS name_piloto, t.title AS equipe, t.id as id_equipe');
+        $query->select('p.id AS id_piloto, p.name AS name_piloto, p.grupo AS grupo, t.title AS equipe, t.id as id_equipe');
         $query->from('#__results As r');
         $query->join('LEFT', '#__stages AS s ON r.id_stage = s.id');
         $query->join('LEFT', '#__championships AS c ON s.id_championship = c.id');
@@ -37,7 +37,7 @@ class CompetitionsModelCompetitions extends JModelLegacy
 
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
-        $query->select('p.id AS id_piloto, p.name AS name_piloto, t.title AS equipe, t.id as id_equipe');
+        $query->select('p.id AS id_piloto, p.name AS name_piloto, p.grupo AS grupo, t.title AS equipe, t.id as id_equipe');
         $query->from('#__results As r');
         $query->join('LEFT', '#__stages AS s ON r.id_stage = s.id');
         $query->join('LEFT', '#__championships AS c ON s.id_championship = c.id');
@@ -279,10 +279,10 @@ class CompetitionsModelCompetitions extends JModelLegacy
         $query->join('LEFT', '#__pilots AS p ON r.id_pilot = p.id');
         $query->join('LEFT', '#__teams AS t ON p.id_team = t.id');
         $query->where('s.id_championship = ' . self::Championship());
-        $query->where('p.cat_pilots= 1');
         $query->where('p.id_team <> 0');
         $query->group('p.id_team');
         $query->order(1);
+
         $db->setQuery($query);
 
         $item = $db->loadObjectList();
@@ -290,7 +290,7 @@ class CompetitionsModelCompetitions extends JModelLegacy
         return $item;
     }
 
-    public static function getPontosEquipefast($idteam, $idstage)
+    public static function getPontosEquipe($idteam, $idstage)
     {
 
         $db = JFactory::getDBO();
@@ -301,40 +301,15 @@ class CompetitionsModelCompetitions extends JModelLegacy
         $query->join('LEFT OUTER', '#__pilots AS p ON r.id_pilot = p.id');
         $query->where('(p.id_team = ' . $idteam . ' or r.id_team = ' . $idteam . ')');
         $query->where('r.id_stage = ' . $idstage);
-        $query->where('p.cat_pilots = 1');
         $query->where('s.id_championship = ' . self::Championship());
-
         $query->group('r.id_stage');
         $query->order(3);
-       //echo $query;
+        //echo $query;
         $db->setQuery($query);
         $item = $db->loadObjectList();
 
         return $item;
     }
-
-    /*public static function getPontosEquipefurius($idteam, $idstage)
-    {
-
-        $db = JFactory::getDBO();
-        $query = $db->getQuery(true);
-        $query->select('sum(r.points) as pontoequipe, r.id_stage AS etapa, p.id_team as equipe');
-        $query->from('#__results As r');
-        $query->join('LEFT OUTER', '#__stages AS s ON r.id_stage = s.id');
-        $query->join('LEFT OUTER', '#__pilots AS p ON r.id_pilot = p.id');
-        $query->where('(p.id_team = ' . $idteam . ' or r.id_team = ' . $idteam . ')');
-        $query->where('r.id_stage = ' . $idstage);
-        $query->where('p.cat_pilots= 2');
-        $query->where('s.id_championship = ' . self::Championship());
-
-        $query->group('r.id_stage');
-        $query->order(3);
-       //echo $query;
-        $db->setQuery($query);
-        $item = $db->loadObjectList();
-
-        return $item;
-    }*/
 
     public static function getEquipeAvulso($idteam)
     {

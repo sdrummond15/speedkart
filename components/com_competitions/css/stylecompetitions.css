@@ -1,6 +1,8 @@
+
 .classificacao {
     width: 100%;
     display: table;
+    
 }
 
 .classificacao h1 {
@@ -76,6 +78,7 @@
 
 .azul {
     color: #0000FF;
+    
 }
 
 .cinza {
