@@ -1,0 +1,90 @@
+.moduletable-next {
+    width: 1170px;
+    display: table;
+    margin: auto;
+    padding: 60px 0;
+}
+
+.moduletable-next h3 {
+    text-align: center;
+    color: #FFF;
+    font-size: 30px;
+    margin-bottom: 60px;
+    font-family: 'daggersquare_oblique';
+}
+
+.imgstage {
+    width: 360px;
+    height: 240px;
+    background-position: center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    margin: 0 60px 0 30px;
+    float: left;
+}
+
+.descstage p {
+    font-family: 'open_sanslight';
+    font-size: 20px;
+    margin: 0 0 8px 0;
+}
+
+.descstage a {
+    display: table;
+    margin: 30px auto 0 auto;
+    color: #FFF;
+    font-family: 'daggersquare_oblique';
+}
+
+.descstage a:hover {
+    color: #da0100;
+    text-decoration: none;
+}
+
+@media screen and (max-width: 1200px) {
+    .moduletable-next {
+        width: 96%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .moduletable-next {
+        padding: 20px 0;
+    }
+
+    .imgstage {
+        width: 300px;
+        height: 200px;
+        display: table;
+        margin: 0 auto 20px auto;
+        float: none;
+    }
+
+    .descstage {
+        display: table;
+        margin: auto;
+    }
+
+    .moduletable-next h3 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .descstage a {
+        margin: 15px auto 0 auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .moduletable-next h3 {
+        font-size: 20px;
+    }
+
+    .descstage p {
+        font-size: 16px;
+    }
+
+    .descstage a {
+        font-size: 14px;
+    }
+}

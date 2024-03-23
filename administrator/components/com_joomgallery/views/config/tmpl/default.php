@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
 <form action="index.php" method="post" id="adminForm" name="adminForm" class="form-inline">
 <?php if(!empty($this->sidebar)): ?>
   <div id="j-sidebar-container" class="span2">
@@ -18,7 +30,9 @@
 
 // start nested MainPane
 echo JHtml::_('tabs.start', 'NestedmainPane', array('useCookie' => 1));
+
 // start first nested MainTab "Grundlegende Einstellungen"
+//---------------------------------------------------------
 echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'NestedMainPane1');
 // start first nested tabs pane
 echo JHtml::_('tabs.start', 'NestedPaneOne', array('useCookie' => 1));
@@ -29,20 +43,20 @@ echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_PATH_DIRECTO
 JHtml::_('joomconfig.start', 'page1');
     JHtml::_('joomconfig.intro', JText::sprintf('COM_JOOMGALLERY_CONFIG_GS_PD_CSS_CONFIGURATION_INTRO', $this->_config->getStyleSheetName(), $this->cssfilemsg));
     JHtml::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_DIRECTORIES_INTRO'));
-if($this->display):
-    $field = '<input size="60" type="text" name="jg_pathimages" value="'.$this->_config->jg_pathimages.'" /><br />['.$this->write_pathimages.']';
-    JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_COMMON_IMAGE_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_IMAGES_STORED'));
-    $field = '<input size="60" type="text" name="jg_pathoriginalimages" value="'.$this->_config->jg_pathoriginalimages.'" /><br />['.$this->write_pathoriginalimages.']';
-    JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_ORIGINALS_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_ORIGINALS_STORED'));
-    $field = '<input size="60" type="text" name="jg_paththumbs" value="'.$this->_config->jg_paththumbs.'" /><br />['.$this->write_paththumbs.']';
-    JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_THUMBNAILS_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_THUMBNAILS_STORED'));
-endif;
+    if($this->display):
+      $field = '<input size="60" type="text" name="jg_pathimages" value="'.$this->_config->jg_pathimages.'" /><br />['.$this->write_pathimages.']';
+      JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_COMMON_IMAGE_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_IMAGES_STORED'));
+      $field = '<input size="60" type="text" name="jg_pathoriginalimages" value="'.$this->_config->jg_pathoriginalimages.'" /><br />['.$this->write_pathoriginalimages.']';
+      JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_ORIGINALS_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_ORIGINALS_STORED'));
+      $field = '<input size="60" type="text" name="jg_paththumbs" value="'.$this->_config->jg_paththumbs.'" /><br />['.$this->write_paththumbs.']';
+      JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_THUMBNAILS_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_THUMBNAILS_STORED'));
+    endif;
     $field = '<input size="60" type="text" name="jg_pathftpupload" value="'.$this->_config->jg_pathftpupload.'" /><br />['.$this->write_pathftpupload.']';
     JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_FTPUPLOAD_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_FOR_FTPUPLOAD'));
-if($this->display):
-    $field = '<input size="60" type="text" name="jg_pathtemp" value="'.$this->_config->jg_pathtemp.'" /><br />['.$this->write_pathtemp.']';
-    JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_TEMP_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_FOR_TEMP'));
-endif;
+    if($this->display):
+        $field = '<input size="60" type="text" name="jg_pathtemp" value="'.$this->_config->jg_pathtemp.'" /><br />['.$this->write_pathtemp.']';
+        JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_TEMP_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_FOR_TEMP'));
+    endif;
     $field = '<input size="60" type="text" name="jg_wmpath" value="'.$this->_config->jg_wmpath.'" /><br />['.$this->write_pathwm.']';
     JHtml::_('joomconfig.row', 'jg_pathimages', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PD_WATERMARK_PATH', $field, true, '', JText::_('COM_JOOMGALLERY_CONFIG_GS_PD_PATH_WATERMARK_STORED'));
     $field = '<input size="60" type="text" name="jg_wmfile" value="'.$this->_config->jg_wmfile.'" /><br />['.$this->wmfilemsg.']';
@@ -62,38 +76,75 @@ JHTML::_('joomconfig.start', 'page2');
     JHTML::_('joomconfig.row', 'jg_filenamereplace', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_RP_FILENAME_REPLACE', $tl_jg_filenamereplace);
 JHTML::_('joomconfig.end');
 
-// start Tab "Grundlegende Einstellungen->Bildmanipulation"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_IMAGE_PROCESSING'), 'nested-three');
+// start Tab "Grundlegende Einstellungen->Werte Ersetzung durch Meta-Daten"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES'), 'nested-three');
 
 JHTML::_('joomconfig.start', 'page3');
-    JHTML::_('joomconfig.intro', '<div align="center"><strong>'.$this->gdmsg.'</strong></div>');
-    $thumbcreator[] = JHTML::_('select.option','gd1', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_GDLIB'));
-    $thumbcreator[] = JHTML::_('select.option','gd2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_GD2LIB'));
-    $thumbcreator[] = JHTML::_('select.option','im', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_IMAGEMAGICK'));
-    $mc_jg_thumbcreation = JHTML::_('select.genericlist',$thumbcreator, 'jg_thumbcreation', 'class="inputbox" size="3"', 'value', 'text', $this->_config->jg_thumbcreation);
-    JHTML::_('joomconfig.row', 'jg_thumbcreation', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_IMAGE_CREATOR', $mc_jg_thumbcreation);
-    JHTML::_('joomconfig.row', 'jg_fastgd2thumbcreation', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_IP_FAST_GD2_THUMBCREATION', $this->_config->jg_fastgd2thumbcreation);
-    $tl_jg_impath = '<input type="text" name="jg_impath" value="'.$this->_config->jg_impath.'" size="50" />';
-    JHTML::_('joomconfig.row', 'jg_impath', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_PATH_TO_IMAGEMAGICK', $tl_jg_impath, true, '', $this->immsg);
-    JHTML::_('joomconfig.row', 'jg_resizetomaxwidth', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_IP_RESIZING', $this->_config->jg_resizetomaxwidth);
-    JHTML::_('joomconfig.row', 'jg_maxwidth', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_MAX_WIDTH', $this->_config->jg_maxwidth);
-    JHTML::_('joomconfig.row', 'jg_picturequality', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_IMAGE_QUALITY', $this->_config->jg_picturequality);
-    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAILS_INTRO'));
-    $directionresize[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_SAMEHIGHT'));
-    $directionresize[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_SAMEWIDTH'));
-    $directionresize[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_FREEHEIGHTWIDTH'));
-    $mc_jg_useforresizedirection = JHTML::_('select.genericlist',$directionresize, 'jg_useforresizedirection', 'class="inputbox" size="3"', 'value', 'text', $this->_config->jg_useforresizedirection);
-    JHTML::_('joomconfig.row', 'jg_useforresizedirection', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_DIRECTION_RESIZE', $mc_jg_useforresizedirection);
-    $cropposition[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLU'));
-    $cropposition[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRU'));
-    $cropposition[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONC'));
-    $cropposition[] = JHTML::_('select.option','3', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLL'));
-    $cropposition[] = JHTML::_('select.option','4', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRL'));
-    $mc_jg_cropposition = JHTML::_('select.genericlist',$cropposition, 'jg_cropposition', 'class="inputbox" size="5"', 'value', 'text', $this->_config->jg_cropposition);
-    JHTML::_('joomconfig.row', 'jg_cropposition', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITION', $mc_jg_cropposition);
-    JHTML::_('joomconfig.row', 'jg_thumbwidth', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_WIDTH', $this->_config->jg_thumbwidth);
-    JHTML::_('joomconfig.row', 'jg_thumbheight', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_HEIGHT', $this->_config->jg_thumbheight);
-    JHTML::_('joomconfig.row', 'jg_thumbquality', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_QUALITY', $this->_config->jg_thumbquality);
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_INTRO'));
+    // Value-Replacer
+    //----------------
+    // Exif data
+    $imgvaluereplacer[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_NONE'));
+    $imgvaluereplacer[] = JHTML::_('select.option','270', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][270]['Name']); // Image Description
+    $imgvaluereplacer[] = JHTML::_('select.option','37510', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['EXIF'][37510]['Name']); // User Comment
+    $imgvaluereplacer[] = JHTML::_('select.option','315', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][315]['Name']); // Artist
+    $imgvaluereplacer[] = JHTML::_('select.option','33432', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][33432]['Name']); // Copyright
+    //$imgvaluereplacer[] = JHTML::_('select.option','271', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][271]['Name']); // Make
+    //$imgvaluereplacer[] = JHTML::_('select.option','272', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][272]['Name']); // Model
+    //$imgvaluereplacer[] = JHTML::_('select.option','305', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][305]['Name']); // Software
+    //$imgvaluereplacer[] = JHTML::_('select.option','41728', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['EXIF'][41728]['Name']); // File Source
+    $imgvaluereplacer[] = JHTML::_('select.option','306', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][306]['Name']); // DateTime
+    $imgvaluereplacer[] = JHTML::_('select.option','36867', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['EXIF'][36867]['Name']); // DateTimeOriginal
+    $imgvaluereplacer[] = JHTML::_('select.option','36868', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['EXIF'][36868]['Name']); // DateTimeDigitized
+
+    // IPTC data
+    $imgvaluereplacer[] = JHTML::_('select.option','205',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][205]['Name']); // ObjectName
+    $imgvaluereplacer[] = JHTML::_('select.option','2105', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2105]['Name']); // Headline/Title
+    $imgvaluereplacer[] = JHTML::_('select.option','2120', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2120]['Name']); // Caption/Description
+    $imgvaluereplacer[] = JHTML::_('select.option','240',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][240]['Name']); // Instructions
+    $imgvaluereplacer[] = JHTML::_('select.option','285',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][285]['Name']); // By-Line Title
+    $imgvaluereplacer[] = JHTML::_('select.option','280',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][280]['Name']); // By-Line
+    $imgvaluereplacer[] = JHTML::_('select.option','225',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][225]['Name']); // Keywords
+    $imgvaluereplacer[] = JHTML::_('select.option','2116', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2116]['Name']); // Copyright
+    $imgvaluereplacer[] = JHTML::_('select.option','2110', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2110]['Name']); // Credit
+    $imgvaluereplacer[] = JHTML::_('select.option','2115', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2115]['Name']); // Source
+    $imgvaluereplacer[] = JHTML::_('select.option','2122', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2122]['Name']); // Editor
+    $imgvaluereplacer[] = JHTML::_('select.option','255',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][255]['Name']); // Creation Date
+    //$imgvaluereplacer[] = JHTML::_('select.option','290',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][290]['Name']); // City
+    $imgvaluereplacer[] = JHTML::_('select.option','292',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][292]['Name']); // Location
+    //$imgvaluereplacer[] = JHTML::_('select.option','2101', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][2101]['Name']); // Country
+    //$imgvaluereplacer[] = JHTML::_('select.option','2103', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . JText::_('COM_JOOMGALLERY_IPTC_TRANSMISSIONREFERENCE'));
+    //$imgvaluereplacer[] = JHTML::_('select.option','220',  JText::_('COM_JOOMGALLERY_IPTC_SUBLEMENTALS'));
+    //$imgvaluereplacer[] = JHTML::_('select.option','210',  JText::_('COM_JOOMGALLERY_IPTC_URGENCY'));
+    //$imgvaluereplacer[] = JHTML::_('select.option','29',   JText::_('COM_JOOMGALLERY_IPTC_CATEGORY'));
+    // Date-Replacer
+    //----------------
+    $imgdatereplacer[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_NONE'));
+    $imgdatereplacer[] = JHTML::_('select.option','306', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['IFD0'][306]['Name']); // DateTime
+    $imgdatereplacer[] = JHTML::_('select.option','36867', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['EXIF'][36867]['Name']); // DateTimeOriginal
+    $imgdatereplacer[] = JHTML::_('select.option','36868', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_EXIF') . '-' . $this->exif_config_array['EXIF'][36868]['Name']); // DateTimeDigitized
+    $imgdatereplacer[] = JHTML::_('select.option','255',  JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUES_IPTC') . '-' . $this->iptc_config_array['IPTC'][255]['Name']); // Creation Date
+    // Warnings
+    //----------------
+    $imgreplaceshowwarning[] = JHTML::_('select.option','0', JText::_('JNO'));
+    $imgreplaceshowwarning[] = JHTML::_('select.option','1', JText::_('JYES'));
+    $imgreplaceshowwarning[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACE_OPTION_2_SHOWWARNING'));
+    //----------------
+
+    $mc_imgtitlereplacer = JHTML::_('select.genericlist',$imgvaluereplacer, 'jg_replaceimgtitle', 'class="inputbox" size="6"', 'value', 'text', $this->_config->jg_replaceimgtitle);
+    JHTML::_('joomconfig.row', 'jg_replaceimgtitle', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_IMGTITLE', $mc_imgtitlereplacer);
+    $mc_imgtextreplacer = JHTML::_('select.genericlist',$imgvaluereplacer, 'jg_replaceimgtext', 'class="inputbox" size="6"', 'value', 'text', $this->_config->jg_replaceimgtext);
+    JHTML::_('joomconfig.row', 'jg_replaceimgtext', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_IMGTEXT', $mc_imgtextreplacer);
+    $mc_imgdatereplacer = JHTML::_('select.genericlist',$imgdatereplacer, 'jg_replaceimgdate', 'class="inputbox" size="5"', 'value', 'text', $this->_config->jg_replaceimgdate);
+    JHTML::_('joomconfig.row', 'jg_replaceimgdate', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_IMGDATE', $mc_imgdatereplacer);
+    $mc_imgauthorreplacer = JHTML::_('select.genericlist',$imgvaluereplacer, 'jg_replaceimgauthor', 'class="inputbox" size="6"', 'value', 'text', $this->_config->jg_replaceimgauthor);
+    JHTML::_('joomconfig.row', 'jg_replaceimgauthor', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_IMGAUTHOR', $mc_imgauthorreplacer);
+    $mc_metadescreplacer = JHTML::_('select.genericlist',$imgvaluereplacer, 'jg_replacemetadesc', 'class="inputbox" size="6"', 'value', 'text', $this->_config->jg_replacemetadesc);
+    JHTML::_('joomconfig.row', 'jg_replacemetadesc', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_METADESC', $mc_metadescreplacer);
+    $mc_metakeyreplacer = JHTML::_('select.genericlist',$imgvaluereplacer, 'jg_replacemetakey', 'class="inputbox" size="6"', 'value', 'text', $this->_config->jg_replacemetakey);
+    JHTML::_('joomconfig.row', 'jg_replacemetakey', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACEVALUE_METAKEY', $mc_metakeyreplacer);
+    $mc_imgreplaceshowwarning = JHTML::_('select.genericlist',$imgreplaceshowwarning, 'jg_replaceshowwarning', 'class="inputbox" size="3"', 'value', 'text', $this->_config->jg_replaceshowwarning);
+    JHtml::_('joomconfig.row', 'jg_replaceshowwarning', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_REPLACE_SHOWWARNING', $mc_imgreplaceshowwarning);
 JHTML::_('joomconfig.end');
 endif;
 
@@ -101,6 +152,7 @@ endif;
 echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_BACKEND_UPLOAD'), 'nested-four');
 
 JHTML::_('joomconfig.start', 'page4');
+    JHTML::_('joomconfig.intro', '<div align="center">'.JText::_('COM_JOOMGALLERY_CONFIG_GS_BU_INTRO').'</div>');
     $uploadordering[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_BU_NO_ORDER'));
     $uploadordering[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_GS_BU_DESCENDING'));
     $uploadordering[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_GS_BU_ASCENDING'));
@@ -166,18 +218,131 @@ JHTML::_('joomconfig.start', 'page6');
     JHTML::_('joomconfig.row', 'jg_ajaxcategoryselection', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_PS_AJAXCATEGORYSELECTION', $this->_config->get('jg_ajaxcategoryselection'));
     JHTML::_('joomconfig.row', 'jg_disableunrequiredchecks', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_PS_DISABLEUNREQUIREDCHECKS', $this->_config->get('jg_disableunrequiredchecks'));
     JHTML::_('joomconfig.row', 'jg_use_listbox_max_user_count', 'text', 'COM_JOOMGALLERY_CONFIG_GS_PS_USELISTBOXMAXUSERCOUNT', $this->_config->get('jg_use_listbox_max_user_count'));
+    $adminsorting[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_PS_ADMINSORTING_DND'));
+    $adminsorting[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_GS_PS_ADMINSORTING_BTN'));
+    $mc_jg_adminsorting = JHTML::_('select.genericlist', $adminsorting, 'jg_adminsorting', 'class="inputbox" size="2"', 'value', 'text', $this->_config->jg_adminsorting);
+    JHTML::_('joomconfig.row', 'jg_adminsorting', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_PS_ADMINSORTING', $mc_jg_adminsorting);
 JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start second nested MainTab "Benutzer-Rechte"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_USER_ACCESS_RIGHTS'), 'NestedMainPane2');
+
+// start second nested MainTab "Bildmanipulation"
+//------------------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_GS_TAB_IMAGE_PROCESSING'), 'NestedMainPane2');
 // start second nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneTwo', array('useCookie' => 1));
-// start Tab "Benutzer-Rechte->Benutzer-Upload ueber 'Meine Galerie'"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_UU_USER_UPLOAD_SETTINGS'), 'nested-seven');
+echo JHtml::_('tabs.start', 'NestedPaneThree', array('useCookie' => 1));
+
+// start Tab "Bildmanipulation->Grundlegende Einstellungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-seven');
 
 JHTML::_('joomconfig.start', 'page7');
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_INTRO'));
+    JHTML::_('joomconfig.intro', '<strong>'.JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_IMAGE_CREATOR').'</strong>');
+    //$thumbcreator[] = JHTML::_('select.option','gd1', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_GDLIB'));
+    //$thumbcreator[] = JHTML::_('select.option','gd2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_GD2LIB'));
+    $thumbcreator[] = JHTML::_('select.option','gd2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_GDLIB'));
+    $thumbcreator[] = JHTML::_('select.option','im', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_IMAGEMAGICK'));
+    $mc_jg_thumbcreation = JHTML::_('select.genericlist',$thumbcreator, 'jg_thumbcreation', 'class="inputbox" size="2"', 'value', 'text', $this->_config->jg_thumbcreation);
+    JHTML::_('joomconfig.row', 'jg_thumbcreation', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_IMAGE_CREATOR', $mc_jg_thumbcreation);
+    JHTML::_('joomconfig.row', 'jg_fastgd2thumbcreation', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_IP_FAST_GD2_THUMBCREATION', $this->_config->jg_fastgd2thumbcreation, true, '', '<strong>'.$this->gdmsg.'</strong><br/>'.JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_FAST_GD2_THUMBCREATION_LONG'));
+    $tl_jg_impath = '<input type="text" name="jg_impath" value="'.$this->_config->jg_impath.'" size="50" />';
+    JHTML::_('joomconfig.row', 'jg_impath', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_PATH_TO_IMAGEMAGICK', $tl_jg_impath, true, '', $this->immsg);
+JHTML::_('joomconfig.end');
+
+// start Tab "Bildmanipulation->Bildgenerierung"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_IP_TAB_IMAGE_CREATION'), 'nested-eight');
+
+JHTML::_('joomconfig.start', 'page8');
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_IP_IC_INTRO'));
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_ORIGINALS_INTRO'));
+    JHTML::_('joomconfig.row', 'jg_origautorot', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_IP_ORIGINAL_AUTOROT', $this->_config->jg_origautorot);
+    JHTML::_('joomconfig.row', 'jg_originalquality', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_ORIGINAL_QUALITY', $this->_config->jg_originalquality);
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_DETAILS_INTRO'));
+    $detail_resizeoption[] = JHTML::_('select.option','0', JText::_('JNO'));
+    $detail_resizeoption[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_SAMEHIGHT'));
+    $detail_resizeoption[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_SAMEWIDTH'));
+    $detail_resizeoption[] = JHTML::_('select.option','4', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_MAXDIMENSION'));
+    $mc_jg_resizetomaxwidth = JHTML::_('select.genericlist',$detail_resizeoption,'jg_resizetomaxwidth', 'class="inputbox" size="4"', 'value', 'text', $this->_config->jg_resizetomaxwidth);
+    JHTML::_('joomconfig.row', 'jg_resizetomaxwidth', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_RESIZING', $mc_jg_resizetomaxwidth);
+    JHTML::_('joomconfig.row', 'jg_maxwidth', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_MAX_WIDTH', $this->_config->jg_maxwidth);
+    JHTML::_('joomconfig.row', 'jg_maxheight', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_MAX_HEIGHT', $this->_config->jg_maxheight);
+    JHTML::_('joomconfig.row', 'jg_detailautorot', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_IP_IMAGE_AUTOROT', $this->_config->jg_detailautorot);
+    JHTML::_('joomconfig.row', 'jg_picturequality', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_IMAGE_QUALITY', $this->_config->jg_picturequality);
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAILS_INTRO'));
+    $directionresize[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_SAMEHIGHT'));
+    $directionresize[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_SAMEWIDTH'));
+    $directionresize[] = JHTML::_('select.option','3', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_FREEHEIGHTWIDTH'));
+    $directionresize[] = JHTML::_('select.option','4', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_MAXDIMENSION'));
+    $tip[] = JHTML::_("joomgallery.tip", '<img src="'.JUri::root().'media/joomgallery/images/config/thumbs_height.png" />', null, true);
+    $tip[] = JHTML::_("joomgallery.tip", '<img src="'.JUri::root().'media/joomgallery/images/config/thumbs_width.png" />', null, true);
+    $tip[] = JHTML::_("joomgallery.tip", '<img src="'.JUri::root().'media/joomgallery/images/config/thumbs_crop.png" />', null, true);
+    $tip[] = JHTML::_("joomgallery.tip", '<img src="'.JUri::root().'media/joomgallery/images/config/thumbs_max.png" />', null, true);
+    $mc_jg_useforresizedirection = JHTML::_('select.genericlist',$directionresize, 'jg_useforresizedirection', 'class="inputbox" size="4"', 'value', 'text', $this->_config->jg_useforresizedirection);
+    JHTML::_('joomconfig.row', 'jg_useforresizedirection', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_DIRECTION_RESIZE', $mc_jg_useforresizedirection, true, '', JText::sprintf('COM_JOOMGALLERY_CONFIG_GS_IP_DIRECTION_RESIZE_LONG',$tip[0],$tip[1],$tip[2],$tip[3]));
+    $cropposition[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLU'));
+    $cropposition[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRU'));
+    $cropposition[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONC'));
+    $cropposition[] = JHTML::_('select.option','3', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLL'));
+    $cropposition[] = JHTML::_('select.option','4', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRL'));
+    $mc_jg_cropposition = JHTML::_('select.genericlist',$cropposition, 'jg_cropposition', 'class="inputbox" size="5"', 'value', 'text', $this->_config->jg_cropposition);
+    JHTML::_('joomconfig.row', 'jg_cropposition', 'custom', 'COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITION', $mc_jg_cropposition);
+    JHTML::_('joomconfig.row', 'jg_thumbwidth', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_WIDTH', $this->_config->jg_thumbwidth);
+    JHTML::_('joomconfig.row', 'jg_thumbheight', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_HEIGHT', $this->_config->jg_thumbheight);
+    JHTML::_('joomconfig.row', 'jg_thumbautorot', 'yesno', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_AUTOROT', $this->_config->jg_thumbautorot);
+    JHTML::_('joomconfig.row', 'jg_thumbquality', 'text', 'COM_JOOMGALLERY_CONFIG_GS_IP_THUMBNAIL_QUALITY', $this->_config->jg_thumbquality);
+    JHTML::_('joomconfig.configTest', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_TEST_INTRO'), $this->configtest_info);
+JHTML::_('joomconfig.end');
+
+// start Tab "Bildmanipulation->Dynamische Anpassungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_IP_TAB_DYN_ADJUST'), 'nested-nine');
+
+JHTML::_('joomconfig.start', 'page9');
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_IP_DA_INTRO'));
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_IP_DA_DETAILS_INTRO'));
+    JHTML::_('joomconfig.row', 'jg_watermark', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_ADD_WATERMARK', $this->_config->jg_watermark);
+    $watermarkpos[] = JHTML::_('select.option', '1', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_TOP_LEFT'));
+    $watermarkpos[] = JHTML::_('select.option', '2', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_TOP_CENTER'));
+    $watermarkpos[] = JHTML::_('select.option', '3', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_TOP_RIGHT'));
+    $watermarkpos[] = JHTML::_('select.option', '4', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_MIDDLE_LEFT'));
+    $watermarkpos[] = JHTML::_('select.option', '5', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_MIDDLE_CENTER'));
+    $watermarkpos[] = JHTML::_('select.option', '6', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_MIDDLE_RIGHT'));
+    $watermarkpos[] = JHTML::_('select.option', '7', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_BOTTOM_LEFT'));
+    $watermarkpos[] = JHTML::_('select.option', '8', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_BOTTOM_CENTER'));
+    $watermarkpos[] = JHTML::_('select.option', '9', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_BOTTOM_RIGHT'));
+    $mc_jg_watermarkpos = JHTML::_('select.genericlist', $watermarkpos, 'jg_watermarkpos', 'class="inputbox" size="1"', 'value', 'text', $this->_config->jg_watermarkpos);
+    JHTML::_('joomconfig.row', 'jg_watermarkpos', 'custom', 'COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARK_POSITION', $mc_jg_watermarkpos);
+    $watermarkzoom[] = JHTML::_('select.option', '0', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKNORESIZE'));
+    $watermarkzoom[] = JHTML::_('select.option', '1', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKHEIGHT'));
+    $watermarkzoom[] = JHTML::_('select.option', '2', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKWIDTH'));
+    $mc_jg_watermarkzoom = JHTML::_('select.genericlist', $watermarkzoom, 'jg_watermarkzoom', 'class="inputbox" size="3"', 'value', 'text', $this->_config->jg_watermarkzoom);
+    JHTML::_('joomconfig.row', 'jg_watermarkzoom', 'custom', 'COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKZOOM', $mc_jg_watermarkzoom);
+    JHTML::_('joomconfig.row', 'jg_watermarksize', 'text', 'COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKSIZE', $this->_config->jg_watermarksize);
+    JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_FS_IP_THUMBNAILS_INTRO'));
+    JHTML::_('joomconfig.row', 'jg_dyncrop', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP', $this->_config->jg_dyncrop);
+    $dyncropposition[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLU'));
+    $dyncropposition[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRU'));
+    $dyncropposition[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONC'));
+    $dyncropposition[] = JHTML::_('select.option','3', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLL'));
+    $dyncropposition[] = JHTML::_('select.option','4', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRL'));
+    $mc_jg_dyncropposition = JHTML::_('select.genericlist', $dyncropposition, 'jg_dyncropposition', 'class="inputbox" size="5"', 'value', 'text', $this->_config->jg_dyncropposition);
+    JHTML::_('joomconfig.row', 'jg_dyncropposition', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_POSITION', $mc_jg_dyncropposition);
+    JHTML::_('joomconfig.row', 'jg_dyncropwidth', 'text', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_WIDTH', $this->_config->jg_dyncropwidth);
+    JHTML::_('joomconfig.row', 'jg_dyncropheight', 'text', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_HEIGHT', $this->_config->jg_dyncropheight);
+JHTML::_('joomconfig.end');
+
+echo JHtml::_('tabs.end');
+
+
+// start third nested MainTab "Benutzer-Rechte"
+//------------------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_USER_ACCESS_RIGHTS'), 'NestedMainPane3');
+// start third nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneThree', array('useCookie' => 1));
+// start Tab "Benutzer-Rechte->Benutzer-Upload ueber 'Meine Galerie'"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_UU_USER_UPLOAD_SETTINGS'), 'nested-ten');
+
+JHTML::_('joomconfig.start', 'page10');
     JHTML::_('joomconfig.row', 'jg_userspace', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_UU_USERSPACE', $this->_config->jg_userspace);
     $useruploaddefaultcat[] = JHTML::_('select.option','0', JText::_('JNONE'));
     $useruploaddefaultcat[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_UR_UU_DEFAULT_CAT_OLDEST_ALL'));
@@ -219,9 +384,9 @@ JHTML::_('joomconfig.start', 'page7');
 JHTML::_('joomconfig.end');
 
 // start Tab "Benutzer-Rechte->Download"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_UD_USER_DOWNLOAD_SETTINGS'), 'nested-seven1');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_UD_USER_DOWNLOAD_SETTINGS'), 'nested-eleven');
 
-JHTML::_('joomconfig.start', 'page71');
+JHTML::_('joomconfig.start', 'page11');
     JHTML::_('joomconfig.row', 'jg_download', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_UD_DOWNLOAD', $this->_config->jg_download);
     JHTML::_('joomconfig.row', 'jg_download_unreg', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_UD_DOWNLOAD_UNREG', $this->_config->jg_download_unreg, $this->display);
     JHTML::_('joomconfig.row', 'jg_download_hint', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_UD_DOWNLOAD_HINT', $this->_config->jg_download_hint);
@@ -234,9 +399,9 @@ JHTML::_('joomconfig.start', 'page71');
 JHTML::_('joomconfig.end');
 
 // start Tab "Benutzer-Rechte->Bewertungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_TAB_RATING_SETTINGS'), 'nested-eight');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_TAB_RATING_SETTINGS'), 'nested-twelve');
 
-JHTML::_('joomconfig.start', 'page8');
+JHTML::_('joomconfig.start', 'page12');
     JHTML::_('joomconfig.row', 'jg_showrating', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_RT_RATING', $this->_config->jg_showrating);
     JHTML::_('joomconfig.row', 'jg_maxvoting', 'text', 'COM_JOOMGALLERY_CONFIG_UR_RT_HIGHEST_RATING', $this->_config->jg_maxvoting);
 
@@ -254,14 +419,15 @@ JHTML::_('joomconfig.start', 'page8');
     JHTML::_('joomconfig.end');
 
 // start Tab "Benutzer-Rechte->Kommentare"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_TAB_COMMENT_SETTINGS'), 'nested-nine');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_TAB_COMMENT_SETTINGS'), 'nested-thirteen');
 
-JHTML::_('joomconfig.start', 'page9');
+JHTML::_('joomconfig.start', 'page13');
     JHTML::_('joomconfig.row', 'jg_showcomment', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_COMMENTS', $this->_config->jg_showcomment);
     JHTML::_('joomconfig.row', 'jg_anoncomment', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_ANONYM', $this->_config->jg_anoncomment, $this->display);
     JHTML::_('joomconfig.row', 'jg_namedanoncomment', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_NAMED_ANONYM', $this->_config->jg_namedanoncomment, $this->display);
     JHTML::_('joomconfig.row', 'jg_anonapprovecom', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_APPROVE_NEEDED_ANONYM', $this->_config->get('jg_anonapprovecom'), $this->display);
     JHTML::_('joomconfig.row', 'jg_approvecom', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_APPROVE_NEEDED', $this->_config->jg_approvecom);
+    JHTML::_('joomconfig.row', 'jg_storecommentip', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_STORE_IP', $this->_config->jg_storecommentip);
     JHTML::_('joomconfig.row', 'jg_bbcodesupport', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_BBCODE', $this->_config->jg_bbcodesupport);
     JHTML::_('joomconfig.row', 'jg_smiliesupport', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_SMILIES', $this->_config->jg_smiliesupport);
     JHTML::_('joomconfig.row', 'jg_anismilie', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_CM_ANISMILIES', $this->_config->jg_anismilie);
@@ -274,9 +440,9 @@ JHTML::_('joomconfig.start', 'page9');
 JHTML::_('joomconfig.end');
 
 // start Tab "Benutzer-Rechte->Beanstandungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_RP_REPORTS_SETTINGS'), 'nested-nine1');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_UR_RP_REPORTS_SETTINGS'), 'nested-fourteen');
 
-JHTML::_('joomconfig.start', 'page91');
+JHTML::_('joomconfig.start', 'page14');
     JHTML::_('joomconfig.row', 'jg_report_images', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_RP_REPORT_IMAGES', $this->_config->jg_report_images);
     JHTML::_('joomconfig.row', 'jg_report_unreg', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_RP_REPORT_UNREG', $this->_config->jg_report_unreg);
     JHTML::_('joomconfig.row', 'jg_report_hint', 'yesno', 'COM_JOOMGALLERY_CONFIG_UR_RP_REPORT_HINT', $this->_config->jg_report_hint);
@@ -284,14 +450,16 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start third nested MainTab "Frontend Einstellungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_FRONTEND_SETTINGS'), 'NestedMainPane3');
-// start third nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneThree', array('useCookie' => 1));
-// start Tab "Frontend Einstellungen->Generelle Einstellungen
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-ten');
 
-JHTML::_('joomconfig.start', 'page10');
+// start fourth nested MainTab "Frontend Einstellungen"
+//------------------------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_FRONTEND_SETTINGS'), 'NestedMainPane4');
+// start fourth nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneFour', array('useCookie' => 1));
+// start Tab "Frontend Einstellungen->Generelle Einstellungen
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-fifteen');
+
+JHTML::_('joomconfig.start', 'page15');
     JHTML::_('joomconfig.row', 'jg_itemid', 'text', 'COM_JOOMGALLERY_CONFIG_FS_GS_ITEMID', $this->_config->get('jg_itemid'));
     JHTML::_('joomconfig.row', 'jg_alternative_layout', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_GS_ALTERNATIVE_LAYOUT', $this->getComponentLayouts($this->_config->get('jg_alternative_layout')));
     JHTML::_('joomconfig.row', 'jg_anchors', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_GS_ANCHORS', $this->_config->jg_anchors);
@@ -302,19 +470,6 @@ JHTML::_('joomconfig.start', 'page10');
     JHTML::_('joomconfig.row', 'jg_tooltips', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_GS_TOOLTIPS', $mc_jg_tooltips);
     JHTML::_('joomconfig.row', 'jg_contentpluginsenabled', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_GS_CONTENTPLUGINS', $this->_config->get('jg_contentpluginsenabled'));
     JHTML::_('joomconfig.row', 'jg_imgalign', 'text', 'COM_JOOMGALLERY_CONFIG_FS_GS_IMG_ALIGN', $this->_config->jg_imgalign);
-    JHTML::_('joomconfig.row', 'jg_dyncrop', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP', $this->_config->jg_dyncrop);
-    $dyncropposition[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLU'));
-    $dyncropposition[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRU'));
-    $dyncropposition[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONC'));
-    $dyncropposition[] = JHTML::_('select.option','3', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONLL'));
-    $dyncropposition[] = JHTML::_('select.option','4', JText::_('COM_JOOMGALLERY_CONFIG_GS_IP_CROP_POSITIONRL'));
-    $mc_jg_dyncropposition = JHTML::_('select.genericlist', $dyncropposition, 'jg_dyncropposition', 'class="inputbox" size="5"', 'value', 'text', $this->_config->jg_dyncropposition);
-    JHTML::_('joomconfig.row', 'jg_dyncropposition', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_POSITION', $mc_jg_dyncropposition);
-    JHTML::_('joomconfig.row', 'jg_dyncropwidth', 'text', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_WIDTH', $this->_config->jg_dyncropwidth);
-    JHTML::_('joomconfig.row', 'jg_dyncropheight', 'text', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_HEIGHT', $this->_config->jg_dyncropheight);
-    $mc_color_value = JHTML::_('joomgallery.colorpicker', 'jg_dyncropbgcol', $this->_config->jg_dyncropbgcol);
-    JHTML::_('joomconfig.row', 'jg_dyncropbgcol', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_GS_DYNCROP_BGCOL', $mc_color_value);
-    $mc_color_value = '';
     $hideemptycats[] = JHTML::_('select.option', 0, JText::_('JNO'));
     $hideemptycats[] = JHTML::_('select.option', 1, JText::_('COM_JOOMGALLERY_CONFIG_FS_GS_HIDE_ONLY_COMPLETELY_EMPTY_CATEGORIES'));
     $hideemptycats[] = JHTML::_('select.option', 2, JText::_('COM_JOOMGALLERY_CONFIG_FS_GS_HIDE_ALL_EMPTY_CATEGORIES'));
@@ -328,16 +483,18 @@ JHTML::_('joomconfig.start', 'page10');
 JHTML::_('joomconfig.end');
 
 // start Tab "Frontend Einstellungen->Anordnung der Bilder"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_IMAGE_ORDERING'), 'nested-eleven');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_IMAGE_ORDERING'), 'nested-sixteen');
 
-JHTML::_('joomconfig.start', 'page10');
+JHTML::_('joomconfig.start', 'page16');
     JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_FS_IO_INTRO'));
-    $picorder[] = JHTML::_('select.option','ordering ASC', JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_ORDERING_ASC'));
-    $picorder[] = JHTML::_('select.option','ordering DESC', JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_ORDERING_DESC'));
-    $picorder[] = JHTML::_('select.option','imgdate ASC', JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_UPLOADTIME_ASC'));
-    $picorder[] = JHTML::_('select.option','imgdate DESC', JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_UPLOADTIME_DESC'));
-    $picorder[] = JHTML::_('select.option','imgtitle ASC', JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_IMGTITLE_ASC'));
-    $picorder[] = JHTML::_('select.option','imgtitle DESC', JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_IMGTITLE_DESC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(0), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_ORDERING_ASC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(1), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_ORDERING_DESC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(2), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_UPLOADTIME_ASC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(3), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_UPLOADTIME_DESC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(4), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_IMGTITLE_ASC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(5), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_IMGTITLE_DESC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(6), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_HITS_ASC'));
+    $picorder[] = JHTML::_('select.option', JoomConfig::getValidImageSortingOrderByClauses(7), JText::_('COM_JOOMGALLERY_COMMON_OPTION_ORDERBY_HITS_DESC'));
     $mc_jg_firstorder = JHTML::_('select.genericlist',$picorder, 'jg_firstorder', 'class="inputbox" size="1"', 'value', 'text', $this->_config->jg_firstorder);
     JHTML::_('joomconfig.row', 'jg_firstorder', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_IO_FIRST', $mc_jg_firstorder);
     array_unshift($picorder, JHTML::_('select.option','', JText::_('COM_JOOMGALLERY_CONFIG_FS_IO_EMPTY')));
@@ -348,18 +505,18 @@ JHTML::_('joomconfig.start', 'page10');
 JHTML::_('joomconfig.end');
 
 // start Tab "Frontend Einstellungen->Seitentitel"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_PAGETITLE_SETTINGS'), 'nested-twelve');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_PAGETITLE_SETTINGS'), 'nested-seventeen');
 
-JHTML::_('joomconfig.start', 'page11');
+JHTML::_('joomconfig.start', 'page17');
     JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_FS_PT_PAGETITLE_SETTINGS_INTRO'));
     JHTML::_('joomconfig.row', 'jg_pagetitle_cat', 'text', 'COM_JOOMGALLERY_CONFIG_FS_PT_CATVIEW', $this->_config->jg_pagetitle_cat, true, 'size = "60"');
     JHTML::_('joomconfig.row', 'jg_pagetitle_detail', 'text', 'COM_JOOMGALLERY_CONFIG_FS_PT_DETAILVIEW', $this->_config->jg_pagetitle_detail, true, 'size = "60"');
 JHTML::_('joomconfig.end');
 
 // start Tab "Frontend Einstellungen->Kopf- und Fussbereich"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_HEADER_AND_FOOTER'), 'nested-thirteen');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_HEADER_AND_FOOTER'), 'nested-eighteen');
 
-JHTML::_('joomconfig.start', 'page12');
+JHTML::_('joomconfig.start', 'page18');
     JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_FS_HF_INTRO'));
     JHTML::_('joomconfig.row', 'jg_showgalleryhead', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_HF_GALLERYHEAD', $this->_config->jg_showgalleryhead);
     $pathway[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_NO_DISPLAY'));
@@ -391,9 +548,9 @@ JHTML::_('joomconfig.start', 'page12');
 JHTML::_('joomconfig.end');
 
 // start Tab "Frontend Einstellungen->Meine Galerie"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_USER_PANEL'), 'nested-fourteen');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_USER_PANEL'), 'nested-nineteen');
 
-JHTML::_('joomconfig.start', 'page13');
+JHTML::_('joomconfig.start', 'page19');
     JHTML::_('joomconfig.row', 'jg_showuserpanel', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_UP_USER_PANEL', $this->_config->jg_showuserpanel);
     JHTML::_('joomconfig.row', 'jg_showuserpanel_hint', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_UP_USER_PANEL_HINT', $this->_config->jg_showuserpanel_hint);
     JHTML::_('joomconfig.row', 'jg_showuserpanel_unreg', 'yesno', 'COM_JOOMGALLERY_CONFIG_FS_UP_USER_PANEL_UNREG', $this->_config->jg_showuserpanel_unreg, $this->display);
@@ -402,9 +559,9 @@ JHTML::_('joomconfig.start', 'page13');
 JHTML::_('joomconfig.end');
 
 // start Tab "Frontend Einstellungen->PopUp-Funktionen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_POPUP_FUNCTIONS'), 'nested-fifteen');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_FS_TAB_POPUP_FUNCTIONS'), 'nested-twenty');
 
-JHTML::_('joomconfig.start', 'page14');
+JHTML::_('joomconfig.start', 'page20');
     JHTML::_('joomconfig.row', 'jg_openjs_padding', 'text', 'COM_JOOMGALLERY_CONFIG_FS_PF_OPENJS_BORDERPX', $this->_config->jg_openjs_padding);
     $mc_color_value = JHTML::_('joomgallery.colorpicker', 'jg_openjs_background', $this->_config->jg_openjs_background);
     JHTML::_('joomconfig.row', 'jg_openjs_background', 'custom', 'COM_JOOMGALLERY_CONFIG_FS_PF_OPENJS_BACKGROUND', $mc_color_value);
@@ -425,14 +582,16 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start fourth nested MainTab "Galerie-Ansicht"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_GALLERY_VIEW'), 'NestedMainPane4');
-// start fourth nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneFour', array('useCookie' => 1));
-// start Tab "Galerie-Ansicht->Generelle Einstellungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-sixteen');
 
-JHTML::_('joomconfig.start', 'page15');
+// start fifth nested MainTab "Galerie-Ansicht"
+//----------------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_GALLERY_VIEW'), 'NestedMainPane5');
+// start fifth nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneFive', array('useCookie' => 1));
+// start Tab "Galerie-Ansicht->Generelle Einstellungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-twentyone');
+
+JHTML::_('joomconfig.start', 'page21');
     JHTML::_('joomconfig.row', 'jg_showgallerysubhead', 'yesno', 'COM_JOOMGALLERY_CONFIG_GV_GS_PATHWAY', $this->_config->jg_showgallerysubhead);
     JHTML::_('joomconfig.row', 'jg_showallcathead', 'yesno', 'COM_JOOMGALLERY_CONFIG_GV_GS_CATEGORYHEADER', $this->_config->jg_showallcathead);
     JHTML::_('joomconfig.row', 'jg_colcat', 'text', 'COM_JOOMGALLERY_CONFIG_GV_GS_NUMB_COLUMN', $this->_config->jg_colcat);
@@ -472,14 +631,16 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start fifth nested MainTab "Kategorie-Ansicht"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_CATEGORY_VIEW'), 'NestedMainPane5');
-// start fifth nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneFive', array('useCookie' => 1));
-// start Tab "Kategorie-Ansicht->Generelle Einstellungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-seventeen');
 
-JHTML::_('joomconfig.start', 'page16');
+// start sixth nested MainTab "Kategorie-Ansicht"
+//------------------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_CATEGORY_VIEW'), 'NestedMainPane6');
+// start sixth nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneSix', array('useCookie' => 1));
+// start Tab "Kategorie-Ansicht->Generelle Einstellungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-twentytwo');
+
+JHTML::_('joomconfig.start', 'page22');
     JHTML::_('joomconfig.row', 'jg_category_rss', 'text', 'COM_JOOMGALLERY_CONFIG_CV_CS_RSS', $this->_config->jg_category_rss);
     $rssicon[] = JHTML::_('select.option', '0', JText::_('JNO'));
     $rssicon[] = JHTML::_('select.option', 'atom', JText::_('COM_JOOMGALLERY_CONFIG_CV_CS_RSS_ICON_ATOM'));
@@ -530,10 +691,14 @@ JHTML::_('joomconfig.start', 'page16');
 JHTML::_('joomconfig.end');
 
 // start Tab "Kategorie-Ansicht->Unterkategorien"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_CV_TAB_SUBCAT_SETTINGS'), 'nested-eighteen');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_CV_TAB_SUBCAT_SETTINGS'), 'nested-twentythree');
 
 JHTML::_('joomconfig.start', 'page17');
-    JHTML::_('joomconfig.row', 'jg_showsubcathead', 'yesno', 'COM_JOOMGALLERY_CONFIG_CV_SC_SUBCATEGORYHEADER', $this->_config->jg_showsubcathead);
+    $showsubcatheadsubs[] = JHTML::_('select.option', '0', JText::_('JNO'));
+    $showsubcatheadsubs[] = JHTML::_('select.option', '1', JText::_('JYES'));
+    $showsubcatheadsubs[] = JHTML::_('select.option', '2', JText::_('COM_JOOMGALLERY_CONFIG_CV_SC_OPTION_SHOW_PARENT_INFO'));
+    $mc_jg_showsubcatheadsubs = JHTML::_('select.genericlist', $showsubcatheadsubs, 'jg_showsubcathead', 'class="inputbox" size="3"', 'value', 'text', $this->_config->jg_showsubcathead);
+    JHTML::_('joomconfig.row', 'jg_showsubcathead', 'custom', 'COM_JOOMGALLERY_CONFIG_CV_SC_SUBCATEGORYHEADER', $mc_jg_showsubcatheadsubs);
     JHTML::_('joomconfig.row', 'jg_showsubcatcount', 'yesno', 'COM_JOOMGALLERY_CONFIG_CV_SC_NUMB_SUBCATEGORIES', $this->_config->jg_showsubcatcount);
     JHTML::_('joomconfig.row', 'jg_colsubcat', 'text', 'COM_JOOMGALLERY_CONFIG_CV_SC_NUMB_COLUMN', $this->_config->jg_colsubcat);
     JHTML::_('joomconfig.row', 'jg_subperpage', 'text', 'COM_JOOMGALLERY_CONFIG_CV_SC_SUBCATS_PER_PAGE', $this->_config->jg_subperpage);
@@ -567,14 +732,16 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start sixth nested MainTab "Detail-Ansicht"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_DETAIL_VIEW'), 'NestedMainPane6');
-// start sixth nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneSix', array('useCookie' => 1));
-// start Tab "Detail-Ansicht->Generelle Einstellungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-nineteen');
 
-JHTML::_('joomconfig.start', 'page18');
+// start seventh nested MainTab "Detail-Ansicht"
+//-----------------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_DETAIL_VIEW'), 'NestedMainPane7');
+// start seventh nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneSeven', array('useCookie' => 1));
+// start Tab "Detail-Ansicht->Generelle Einstellungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-twentyfour');
+
+JHTML::_('joomconfig.start', 'page24');
     JHTML::_('joomconfig.row', 'jg_showdetailpage', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_ALLOW_DETAILPAGE', $this->_config->jg_showdetailpage);
     JHTML::_('joomconfig.row', 'jg_disabledetailpage', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_DISABLE_DEFAULT_DETAIL_VIEW', $this->_config->jg_disabledetailpage);
     JHTML::_('joomconfig.row', 'jg_showdetailnumberofpics', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_COUNTER', $this->_config->jg_showdetailnumberofpics);
@@ -597,24 +764,6 @@ JHTML::_('joomconfig.start', 'page18');
     JHTML::_('joomconfig.row', 'jg_showdetailauthor', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_AUTHOR', $this->_config->jg_showdetailauthor);
     JHTML::_('joomconfig.row', 'jg_showoriginalfilesize', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_ORIGFILESIZE', $this->_config->jg_showoriginalfilesize);
     JHTML::_('joomconfig.row', 'jg_showdetaildownload', 'yesno', 'COM_JOOMGALLERY_CONFIG_COMMON_DOWNLOAD', $this->_config->jg_showdetaildownload);
-    JHTML::_('joomconfig.row', 'jg_watermark', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_ADD_WATERMARK', $this->_config->jg_watermark);
-    $watermarkpos[] = JHTML::_('select.option', '1', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_TOP_LEFT'));
-    $watermarkpos[] = JHTML::_('select.option', '2', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_TOP_CENTER'));
-    $watermarkpos[] = JHTML::_('select.option', '3', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_TOP_RIGHT'));
-    $watermarkpos[] = JHTML::_('select.option', '4', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_MIDDLE_LEFT'));
-    $watermarkpos[] = JHTML::_('select.option', '5', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_MIDDLE_CENTER'));
-    $watermarkpos[] = JHTML::_('select.option', '6', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_MIDDLE_RIGHT'));
-    $watermarkpos[] = JHTML::_('select.option', '7', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_BOTTOM_LEFT'));
-    $watermarkpos[] = JHTML::_('select.option', '8', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_BOTTOM_CENTER'));
-    $watermarkpos[] = JHTML::_('select.option', '9', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_OPTION_BOTTOM_RIGHT'));
-    $mc_jg_watermarkpos = JHTML::_('select.genericlist', $watermarkpos, 'jg_watermarkpos', 'class="inputbox" size="1"', 'value', 'text', $this->_config->jg_watermarkpos);
-    JHTML::_('joomconfig.row', 'jg_watermarkpos', 'custom', 'COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARK_POSITION', $mc_jg_watermarkpos);
-    $watermarkzoom[] = JHTML::_('select.option', '0', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKNORESIZE'));
-    $watermarkzoom[] = JHTML::_('select.option', '1', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKHEIGHT'));
-    $watermarkzoom[] = JHTML::_('select.option', '2', JText::_('COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKWIDTH'));
-    $mc_jg_watermarkzoom = JHTML::_('select.genericlist', $watermarkzoom, 'jg_watermarkzoom', 'class="inputbox" size="3"', 'value', 'text', $this->_config->jg_watermarkzoom);
-    JHTML::_('joomconfig.row', 'jg_watermarkzoom', 'custom', 'COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKZOOM', $mc_jg_watermarkzoom);
-    JHTML::_('joomconfig.row', 'jg_watermarksize', 'text', 'COM_JOOMGALLERY_CONFIG_DV_GS_WATERMARKSIZE', $this->_config->jg_watermarksize);
     JHTML::_('joomconfig.row', 'jg_bigpic', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_LINKTOORIGINAL', $this->_config->jg_bigpic);
     JHTML::_('joomconfig.row', 'jg_bigpic_unreg', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_GS_LINKTOORIGINAL_UNREG', $this->_config->jg_bigpic_unreg);
     $mc_jg_bigpic_open = JHtml::_('joomselect.openimage', 'jg_bigpic_open', $this->_config->get('jg_bigpic_open'), false);
@@ -634,8 +783,8 @@ JHTML::_('joomconfig.start', 'page18');
 JHTML::_('joomconfig.end');
 
 // start Tab "Detail-Ansicht->Accordion"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_ACCORDION_SETTINGS'), 'nested-twenty');
-JHTML::_('joomconfig.start', 'dtlaccordion');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_ACCORDION_SETTINGS'), 'nested-twentyfive');
+JHTML::_('joomconfig.start', 'page25');
     JHTML::_('joomconfig.row', 'jg_showdetailaccordion', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_AC_ACCORDION', $this->_config->jg_showdetailaccordion);
     JHTML::_('joomconfig.row', 'jg_accordionduration', 'text', 'COM_JOOMGALLERY_CONFIG_DV_AC_DURATION', $this->_config->jg_accordionduration);
     JHTML::_('joomconfig.row', 'jg_accordiondisplay', 'text', 'COM_JOOMGALLERY_CONFIG_DV_AC_DISPLAY', $this->_config->jg_accordiondisplay);
@@ -645,9 +794,9 @@ JHTML::_('joomconfig.start', 'dtlaccordion');
 JHTML::_('joomconfig.end');
 
 // start Tab "Detail-Ansicht->Motiongallery"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_MOTIONGALLERY_SETTINGS'), 'nested-twentyone');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_MOTIONGALLERY_SETTINGS'), 'nested-twentysix');
 
-JHTML::_('joomconfig.start', 'page19');
+JHTML::_('joomconfig.start', 'page26');
     JHTML::_('joomconfig.row', 'jg_minis', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_MG_MOTIONGALLERY', $this->_config->jg_minis);
     $joom_ShowMotionMinis[] = JHTML::_('select.option', '1', JText::_('COM_JOOMGALLERY_CONFIG_DV_MG_OPTION_STATIC'));
     $joom_ShowMotionMinis[] = JHTML::_('select.option', '2', JText::_('COM_JOOMGALLERY_CONFIG_DV_MG_OPTION_MOVEABLE'));
@@ -666,21 +815,22 @@ JHTML::_('joomconfig.start', 'page19');
 JHTML::_('joomconfig.end');
 
 // start Tab "Detail-Ansicht->Namensschilder"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_NAMETAGS_SETTINGS'), 'nested-twentytwo');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_NAMETAGS_SETTINGS'), 'nested-twentyseven');
 
-JHTML::_('joomconfig.start', 'page20');
+JHTML::_('joomconfig.start', 'page27');
     JHTML::_('joomconfig.row', 'jg_nameshields', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_NT_NAMETAGS', $this->_config->jg_nameshields);
     JHTML::_('joomconfig.row', 'jg_nameshields_others', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_NT_OTHERS', $this->_config->jg_nameshields_others);
     JHTML::_('joomconfig.row', 'jg_nameshields_unreg', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_NT_GUEST_VISIBLE', $this->_config->jg_nameshields_unreg, $this->display);
     JHTML::_('joomconfig.row', 'jg_show_nameshields_unreg', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_NT_GUEST_INFORMATION', $this->_config->jg_show_nameshields_unreg, $this->display);
+    JHTML::_('joomconfig.row', 'jg_storenametagip', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_NT_STORE_IP', $this->_config->jg_storenametagip);
     JHTML::_('joomconfig.row', 'jg_nameshields_height', 'text', 'COM_JOOMGALLERY_CONFIG_DV_NT_HEIGHT', $this->_config->jg_nameshields_height);
     JHTML::_('joomconfig.row', 'jg_nameshields_width', 'text', 'COM_JOOMGALLERY_CONFIG_DV_NT_WIDTH', $this->_config->jg_nameshields_width);
 JHTML::_('joomconfig.end');
 
 // start Tab "Detail-Ansicht->Slideshow"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_SLIDESHOW_SETTINGS'), 'nested-twentythree');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_SLIDESHOW_SETTINGS'), 'nested-twentyeight');
 
-JHTML::_('joomconfig.start', 'page21');
+JHTML::_('joomconfig.start', 'page28');
     JHTML::_('joomconfig.row', 'jg_slideshow', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_SL_SLIDESHOW', $this->_config->jg_slideshow);
     JHTML::_('joomconfig.row', 'jg_slideshow_timer', 'text', 'COM_JOOMGALLERY_CONFIG_DV_SL_TIMEFRAME', $this->_config->jg_slideshow_timer);
     $joom_transitions[] = JHTML::_('select.option','0', 'fade');
@@ -706,9 +856,9 @@ JHTML::_('joomconfig.start', 'page21');
 JHTML::_('joomconfig.end');
 
 // start Tab "Detail-Ansicht->Exif-Daten"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_EXIF_SETTINGS'), 'nested-twentyfour');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_EXIF_SETTINGS'), 'nested-twentynine');
 
-JHTML::_('joomconfig.start', 'page22');
+JHTML::_('joomconfig.start', 'page29');
     JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_DV_ED_EXIF_INTRO_ONE').'<br />'.JText::_('COM_JOOMGALLERY_CONFIG_DV_ED_EXIF_INTRO_TWO').'<br />'.$this->exifmsg);
     JHTML::_('joomconfig.row', 'jg_showexifdata', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_ED_EXIFDATA', $this->_config->jg_showexifdata);
     JHTML::_('joomconfig.row', 'jg_showgeotagging', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_ED_SHOWGEOTAGGING', $this->_config->jg_showgeotagging);
@@ -781,9 +931,9 @@ JHTML::_('joomconfig.start', 'page22');
 JHTML::_('joomconfig.end');
 
 // start Tab "Detail-Ansicht->IPTC-Daten"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_IPTC_SETTINGS'), 'nested-twentyfive');
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_DV_TAB_IPTC_SETTINGS'), 'nested-thirty');
 
-JHTML::_('joomconfig.start', 'page23');
+JHTML::_('joomconfig.start', 'page30');
     JHTML::_('joomconfig.intro', JText::_('COM_JOOMGALLERY_CONFIG_DV_ID_IPTC_INTRO_ONE').'<br />'.JText::_('COM_JOOMGALLERY_CONFIG_DV_ID_IPTC_INTRO_TWO'));
     JHTML::_('joomconfig.row', 'jg_showiptcdata', 'yesno', 'COM_JOOMGALLERY_CONFIG_DV_ID_IPTCDATA', $this->_config->jg_showiptcdata);
 ?>
@@ -858,14 +1008,16 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start seventh nested MainTab "Toplisten"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_TOPLIST_SETTINGS'), 'NestedMainPane7');
-// start seventh nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneSeven', array('useCookie' => 1));
-// start Tab "Toplisten->Generelle Einstellungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-twentysix');
 
-JHTML::_('joomconfig.start', 'page24');
+// start eighth nested MainTab "Toplisten"
+//-----------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_TOPLIST_SETTINGS'), 'NestedMainPane8');
+// start eighth nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneEight', array('useCookie' => 1));
+// start Tab "Toplisten->Generelle Einstellungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-thirtyone');
+
+JHTML::_('joomconfig.start', 'page31');
     $toplist[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_NO_DISPLAY'));
     $toplist[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_IN_HEADER'));
     $toplist[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_IN_HEADERFOOTER'));
@@ -902,14 +1054,16 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start eighth nested MainTab "Favoriten"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_FAVOURITES_SETTINGS'), 'NestedMainPane8');
-// start eighth nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneEight', array('useCookie' => 1));
-// start Tab "Favoriten->Generelle Einstellungen"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-twentyseven');
 
-JHTML::_('joomconfig.start', 'page25');
+// start nineth nested MainTab "Favoriten"
+//-----------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_FAVOURITES_SETTINGS'), 'NestedMainPane9');
+// start nineth nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneNine', array('useCookie' => 1));
+// start Tab "Favoriten->Generelle Einstellungen"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-thirtytwo');
+
+JHTML::_('joomconfig.start', 'page32');
     JHTML::_('joomconfig.row', 'jg_favourites', 'yesno', 'COM_JOOMGALLERY_CONFIG_FV_GS_FAVOURITES', $this->_config->jg_favourites);
     JHTML::_('joomconfig.row', 'jg_favouritesshownotauth', 'yesno', 'COM_JOOMGALLERY_CONFIG_FV_GS_GUEST_INFORMATION', $this->_config->jg_favouritesshownotauth);
     JHTML::_('joomconfig.row', 'jg_maxfavourites', 'text', 'COM_JOOMGALLERY_CONFIG_FV_GS_MAX_IMAGES', $this->_config->jg_maxfavourites);
@@ -923,14 +1077,18 @@ JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
 
-// start nineth nested MainTab "Search"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_SEARCH_SETTINGS'), 'NestedMainPane9');
-// start nineth nested tabs pane
-echo JHtml::_('tabs.start', 'NestedPaneNine', array('useCookie' => 1));
-// start Tab "Search->General settings"
-echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-twentyeight');
 
-JHTML::_('joomconfig.start', 'page28');
+// start tenth nested MainTab "Search"
+//-------------------------------------
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_TAB_SEARCH_SETTINGS'), 'NestedMainPane10');
+// start tenth nested tabs pane
+echo JHtml::_('tabs.start', 'NestedPaneTen', array('useCookie' => 1));
+// start Tab "Search->General settings"
+echo JHtml::_('tabs.panel', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_TAB_GENERAL_SETTINGS'), 'nested-thirtythree');
+
+JHTML::_('joomconfig.start', 'page33');
+    $mc_jg_searchengine = JHtml::_('joomselect.searchEngine', 'jg_searchengine', $this->_config->get('jg_searchengine'));
+    JHTML::_('joomconfig.row', 'jg_searchengine', 'custom', 'COM_JOOMGALLERY_CONFIG_SS_GS_SEARCHENGINE', $mc_jg_searchengine);
     $search[] = JHTML::_('select.option','0', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_NO_DISPLAY'));
     $search[] = JHTML::_('select.option','1', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_IN_HEADER'));
     $search[] = JHTML::_('select.option','2', JText::_('COM_JOOMGALLERY_CONFIG_COMMON_OPTION_IN_FOOTER'));
@@ -952,9 +1110,11 @@ JHTML::_('joomconfig.start', 'page28');
     JHTML::_('joomconfig.row', 'jg_showsearchfavourite', 'yesno', 'COM_JOOMGALLERY_CONFIG_COMMON_FAVOURITES_LINK', $this->_config->jg_showsearchfavourite);
     JHTML::_('joomconfig.row', 'jg_search_report_images', 'yesno', 'COM_JOOMGALLERY_CONFIG_COMMON_REPORT_IMAGES', $this->_config->jg_search_report_images);
     JHTML::_('joomconfig.row', 'jg_showsearcheditorlinks', 'yesno', 'COM_JOOMGALLERY_CONFIG_COMMON_EDITOR_LINKS', $this->_config->jg_showsearcheditorlinks);
-    JHTML::_('joomconfig.end');
+  JHTML::_('joomconfig.end');
 
 echo JHtml::_('tabs.end');
+
+echo $this->event->afterDisplayTabs;
 
 echo JHtml::_('tabs.end');
 
@@ -971,3 +1131,7 @@ echo JHtml::_('tabs.end');
     <?php JHtml::_('joomgallery.credits'); ?>
   </div>
 </form>
+<?php
+$layout = new JLayoutFile('joomgallery.config.reset', JPATH_COMPONENT . '/layouts');
+echo $layout->render();
+?>

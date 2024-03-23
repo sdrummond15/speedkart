@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/detail/view.html.php $
-// $Id: view.html.php 4404 2014-06-26 21:23:58Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -220,6 +218,9 @@ class JoomGalleryViewDetail extends JoomGalleryView
     {
       $this->_doc->setMetaData('author', $image->author);
     }
+
+    // Show fulltext of description
+    $image->imgtext = JoomHelper::getFulltext($image->imgtext);
 
     // Set the title attribute in a tag with title and/or description of image
     // if a box is activated
@@ -438,7 +439,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
           // Description
           if($row->imgtext != '')
           {
-            $description =JoomHelper::fixForJS($row->imgtext);
+            $description = JoomHelper::fixForJS(JoomHelper::getFulltext($row->imgtext));
           }
           else
           {
@@ -653,7 +654,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
       }
 
       // Download icon
-      if(   $this->_config->get('jg_download')
+      if(   ($image->catallow_download == (-1) ? $this->_config->get('jg_download') : $image->catallow_download)
         &&  $this->_config->get('jg_showdetaildownload')
         &&  ($image->orig_exists || $this->_config->get('jg_downloadfile') != 1)
         )
@@ -772,7 +773,8 @@ class JoomGalleryViewDetail extends JoomGalleryView
           $params->set('show_edit_icon', 1);
         }
 
-        if($this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$image->id))
+        if(   $this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$image->id)
+          || ($this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.image.'.$image->id) && $image->imgowner && $image->imgowner == $this->_user->get('id')))
         {
           $params->set('show_delete_icon', 1);
         }
@@ -866,10 +868,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
           {
             $params->set('show_map', 1);
             $this->assignRef('mapdata', $mapdata);
-
-            $apikey = $this->_config->get('jg_geotaggingkey');
-            $this->_doc->addScript('http'.(JUri::getInstance()->isSSL() ? 's' : '').'://maps.google.com/maps/api/js?sensor=false'.(!empty($apikey) ? '&amp;key='.$apikey : ''));
-
+            $this->apikey = $this->_config->get('jg_geotaggingkey');
             JText::script('COM_JOOMGALLERY_DETAIL_MAPS_BROWSER_IS_INCOMPATIBLE');
           }
         }
@@ -889,7 +888,7 @@ class JoomGalleryViewDetail extends JoomGalleryView
       }
 
       // Rating
-      if($this->_config->get('jg_showrating'))
+      if($image->catallow_rating == (-1) ? $this->_config->get('jg_showrating') : $image->catallow_rating)
       {
         if($this->_config->get('jg_votingonlyreg') && !$this->_user->get('id'))
         {
@@ -948,8 +947,9 @@ class JoomGalleryViewDetail extends JoomGalleryView
 
       if($this->_config->get('jg_bbcodelink'))
       {
-        $current_uri  = JURI::getInstance(JURI::base());
-        $current_host = $current_uri->toString(array('scheme', 'host', 'port'));
+        $current_uri    = JURI::getInstance(JURI::base());
+        $current_host   = $current_uri->getHost();
+        $current_scheme = $current_uri->getScheme();
 
         $params->set('show_bbcode', 1);
 
@@ -958,9 +958,10 @@ class JoomGalleryViewDetail extends JoomGalleryView
           )
         {
           // Ensure that the correct host and path is prepended
-          $uri  = JFactory::getUri($image->img_src);
+          $uri = JFactory::getUri($image->img_src);
+          $uri->setScheme($current_scheme);
           $uri->setHost($current_host);
-          $params->set('bbcode_img', str_replace(array('&', 'http://http://'), array('&amp;', 'http://'), $uri->toString()));
+          $params->set('bbcode_img', str_replace('&', '&amp;', $uri->toString()));
         }
 
         if(    $this->_config->get('jg_bbcodelink') == 2
@@ -970,13 +971,14 @@ class JoomGalleryViewDetail extends JoomGalleryView
           $url = JRoute::_('index.php?view=detail&id='.$image->id).JHTML::_('joomgallery.anchor');
 
           // Ensure that the correct host and path is prepended
-          $uri  = JFactory::getUri($url);
+          $uri = JFactory::getUri($url);
+          $uri->setScheme($current_scheme);
           $uri->setHost($current_host);
           $params->set('bbcode_url', str_replace('&', '&amp;', $uri->toString()));
         }
       }
 
-      if($this->_config->get('jg_showcomment'))
+      if($image->catallow_comment == (-1) ? $this->_config->get('jg_showcomment') : $image->catallow_comment)
       {
         $params->set('show_comments_block', 1);
 
@@ -1105,6 +1107,11 @@ class JoomGalleryViewDetail extends JoomGalleryView
         }
       }
     }
+
+    // Get additional view data
+    // Important Note: Please push the additional data into $image->additionalData['pluginName']
+    $image->additionalData = array();
+    $this->_mainframe->triggerEvent('onJoomAfterPrepareDisplayHTML', array('detail.image', $image->id, &$image->additionalData));
 
     $icons        = $this->_mainframe->triggerEvent('onJoomDisplayIcons', array('detail.image', $image));
     $event->icons = implode('', $icons);

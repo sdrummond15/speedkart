@@ -23,7 +23,7 @@ class PilotsViewPilot extends JViewLegacy {
         $this->melhores2a5 = $this->get('Melhores2a5');
         $this->totalpontos = $this->get('TotalPontos');
         $this->historico = $this->get('Historico');
-       
+
         parent::display($tpl);
     }
 }

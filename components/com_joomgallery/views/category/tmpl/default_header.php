@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
 <div class="gallery">
 <?php if($this->params->get('show_page_heading', 0)): ?>
   <h2>
@@ -31,7 +43,8 @@
       if($this->params->get('show_header_backlink')): ?>
   <div class="jg_back">
     <a href="<?php echo $this->backtarget; ?>">
-      <?php echo $this->backtext; ?></a>
+    
+     Voltar </a>
   </div>
 <?php endif;
       if($this->params->get('show_mygal')): ?>

@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/categories.php $
-// $Id: categories.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -63,6 +61,9 @@ class JoomGalleryControllerCategories extends JoomGalleryController
     $task     = JRequest::getCmd('task');
     $publish  = (int)($task == 'publish');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cid, array($cid));
+
     if(empty($cid))
     {
       $this->setRedirect($this->_ambit->getRedirectUrl(), JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_CATEGORIES_SELECTED'));
@@ -119,6 +120,9 @@ class JoomGalleryControllerCategories extends JoomGalleryController
     $task     = JRequest::getCmd('task');
     $publish  = ($task == 'approve');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cid, array($cid));
+
     if(empty($cid))
     {
       $this->setRedirect($this->_ambit->getRedirectUrl(), JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_CATEGORIES_SELECTED'));
@@ -171,6 +175,9 @@ class JoomGalleryControllerCategories extends JoomGalleryController
   function remove()
   {
     $ids = JRequest::getVar('cid', array(), '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($ids, array($ids));
 
     $model = $this->getModel('categories');
     try
@@ -424,6 +431,9 @@ class JoomGalleryControllerCategories extends JoomGalleryController
   {
     $cid = JRequest::getVar('cid', array(), 'post', 'array');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($ids, array($ids));
+
     // Direction
     $dir  = 1;
     $task = JRequest::getCmd('task');
@@ -466,6 +476,10 @@ class JoomGalleryControllerCategories extends JoomGalleryController
     $order          = JRequest::getVar('order',  null, 'post', 'array');
     $originalOrder  = explode(',', JRequest::getString('original_order_values'));
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($pks, array($pks));
+    JArrayHelper::toInteger($order, array($order));
+
     // Make sure something has changed
     if($order !== $originalOrder)
     {
@@ -498,7 +512,7 @@ class JoomGalleryControllerCategories extends JoomGalleryController
   public function batch()
   {
     JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-  
+
     $vars = $this->input->post->get('batch', array(), 'array');
     $cid  = $this->input->post->get('cid', array(), 'array');
 

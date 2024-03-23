@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/ftpfiles.php $
-// $Id: ftpfiles.php 4231 2013-04-25 20:41:10Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -43,7 +41,7 @@ class JFormFieldFtpFiles extends JFormField
     {
       $directory = JPATH_ROOT.'/'.$directory;
     }
-    $files = JFolder::files($directory, '\.bmp$|\.gif$|\.jpg$|\.png$|\.jpeg$|\.jpe$|\.BMP$|\.GIF$|\.JPG$|\.PNG$|\.JPEG$|\.JPE$');
+    $files = JFolder::files($directory, '\.bmp$|\.gif$|\.jpg$|\.png$|\.jpeg$|\.jpe$|\.webp$|\.BMP$|\.GIF$|\.JPG$|\.PNG$|\.JPEG$|\.JPE$|\.WEBP$');
     if(!$files)
     {
       $files = array();

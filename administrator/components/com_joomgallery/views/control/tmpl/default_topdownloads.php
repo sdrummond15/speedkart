@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
             <div class="well well-small">
               <div class="module-title nav-header">
                 <?php echo JText::_('COM_JOOMGALLERY_ADMENU_TOP_DOWNLOADS'); ?>
@@ -14,7 +26,7 @@
                     <td class="center nowrap">
                       <span class="badge badge-info hasTooltip" title="<?php echo JText::_('COM_JOOMGALLERY_COMMON_DOWNLOADS');?>"><?php echo $item->downloads;?></span>
                     </td>
-                    <td class="center" width="25">
+                    <td class="center">
                       <?php echo JHTML::_('joomgallery.minithumbimg', $item, 'jg_minithumb', $canEdit || $canEditOwn ? 'href="'.JRoute::_('index.php?option='._JOOM_OPTION.'&controller=images&task=edit&cid='.$item->id) : null, true); ?>
                     </td>
                     <td>

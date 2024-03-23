@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
 <div class="alert alert-info">
     <h4><?php echo JText::_('COM_JOOMGALLERY_COMMON_IMPORTANT_NOTICE'); ?></h4>
     <?php echo JText::_('COM_JOOMGALLERY_UPLOAD_BATCH_UPLOAD_NOTE'); ?>
@@ -34,15 +46,23 @@
       <?php endif; ?>
   <div class="control-group">
     <div class="control-label">
-      <?php echo $this->batch_form->getLabel('imgtext'); ?>
+      <?php echo $this->batch_form->getLabel('batch-imgtext'); ?>
     </div>
     <div class="controls">
-      <?php echo $this->batch_form->getInput('imgtext'); ?>
+      <?php echo $this->batch_form->getInput('batch-imgtext'); ?>
     </div>
   </div>
   <div class="control-group">
     <div class="control-label">
       <?php echo $this->batch_form->getLabel('imgauthor'); ?>
+    </div>
+    <div class="controls">
+      <?php echo $this->batch_form->getInput('imgauthor'); ?>
+    </div>
+  </div>
+  <div class="control-group">
+    <div class="control-label">
+      <?php echo $this->batch_form->getLabel('owner'); ?>
     </div>
     <div class="controls">
       <div class="jg-uploader"><?php echo JHtml::_('joomgallery.displayname', $this->_user->get('id'), 'upload'); ?></div>

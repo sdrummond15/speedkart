@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/joomgallery.php $
-// $Id: joomgallery.php 4325 2013-09-03 21:00:28Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -31,6 +29,7 @@ JLoader::register('JoomHelper',       JPATH_COMPONENT.'/helpers/helper.php');
 JLoader::register('JoomAmbit',        JPATH_COMPONENT.'/helpers/ambit.php');
 JLoader::register('JoomConfig',       JPATH_COMPONENT_ADMINISTRATOR.'/helpers/config.php');
 JLoader::register('JoomFile',         JPATH_COMPONENT_ADMINISTRATOR.'/helpers/file.php');
+JLoader::register('JoomIMGtools',     JPATH_COMPONENT_ADMINISTRATOR.'/helpers/imgtools.php');
 JTable::addIncludePath(               JPATH_COMPONENT_ADMINISTRATOR.'/tables');
 
 // Create the controller

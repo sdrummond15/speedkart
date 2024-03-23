@@ -1,4 +1,15 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
@@ -104,16 +115,16 @@ echo $this->loadTemplate('header');
             <th class="nowrap">
               <?php echo JHtml::_('grid.sort', 'COM_JOOMGALLERY_COMMON_IMAGE_NAME', 'imgtitle', $listDirn, $listOrder); ?>
             </th>
-            <th class="nowrap" width="5%">
+            <th class="nowrap hidden-phone" width="5%">
               <?php echo JHtml::_('grid.sort', 'COM_JOOMGALLERY_COMMON_HITS', 'hits', $listDirn, $listOrder); ?>
             </th>
-            <th class="nowrap" width="7%">
+            <th class="nowrap hidden-phone" width="7%">
               <?php echo JHtml::_('grid.sort', 'COM_JOOMGALLERY_COMMON_DOWNLOADS', 'downloads', $listDirn, $listOrder); ?>
             </th>
             <th class="nowrap hidden-phone" width="30%">
               <?php echo JHtml::_('grid.sort', 'COM_JOOMGALLERY_COMMON_CATEGORY', 'catid', $listDirn, $listOrder); ?>
             </th>
-            <th class="nowrap" width="13%">
+            <th class="nowrap" width="20%">
               <?php echo JText::_('COM_JOOMGALLERY_COMMON_ACTION'); ?>
             </th>
 <?php       if(!$this->_config->get('jg_approve')): ?>
@@ -178,10 +189,10 @@ echo $this->loadTemplate('header');
               </a>
 <?php       endif; ?>
             </td>
-            <td>
+            <td class="hidden-phone">
               <?php echo $item->hits; ?>
             </td>
-            <td>
+            <td class="hidden-phone">
               <?php echo $item->downloads; ?>
             </td>
             <td class="hidden-phone">
@@ -264,8 +275,11 @@ echo $this->loadTemplate('header');
                     <div class="span3">
                       <label for="imgtitle_<?php echo $item->id; ?>"><?php echo JText::_('COM_JOOMGALLERY_COMMON_IMAGE_NAME'); ?><span class="">&nbsp;*</span></label>
                     </div>
-                    <div class="span9">
-                      <input type="text" value="<?php echo $item->imgtitle; ?>" name="imgtitle" id="imgtitle_<?php echo $item->id; ?>" class="span12 required" required="required" />
+                    <div class="span7">
+                      <input type="text" value="<?php echo $item->imgtitle; ?>" name="imgtitle" id="imgtitle_<?php echo $item->id; ?>" class="span12 required" required="required" onkeyup="count_<?php echo $item->id; ?>(this)"/>
+                    </div>
+                    <div class="span2">
+                      <label>(<span id="<?php echo $item->id; ?>_charcount_imgtitle">0</span> <?php echo JText::_('COM_JOOMGALLERY_COMMON_CHARACTERS'); ?>)</label>
                     </div>
                   </div>
                   <div class="row-fluid">
@@ -281,8 +295,11 @@ echo $this->loadTemplate('header');
                     <div class="span3">
                       <label for="metadesc_<?php echo $item->id; ?>"><?php echo JText::_('COM_JOOMGALLERY_USERPANEL_METADESC'); ?></label>
                     </div>
-                    <div class="span9">
-                      <input type="text" value="<?php echo $item->metadesc; ?>" name="metadesc" id="metadesc_<?php echo $item->id; ?>" class="span12" />
+                    <div class="span7">
+                      <input type="text" value="<?php echo $item->metadesc; ?>" name="metadesc" id="metadesc_<?php echo $item->id; ?>" class="span12" onkeyup="count_<?php echo $item->id; ?>(this)"/>
+                    </div>
+                    <div class="span2">
+                      <label>(<span id="<?php echo $item->id; ?>_charcount_metadesc">0</span> <?php echo JText::_('COM_JOOMGALLERY_COMMON_CHARACTERS'); ?>)</label>
                     </div>
                   </div>
                   <?php endif; ?>
@@ -296,6 +313,18 @@ echo $this->loadTemplate('header');
               </div>
             </td>
           </tr>
+          <script>
+            function count_<?php echo $item->id; ?>(obj)
+            {
+              document.getElementById("<?php echo $item->id; ?>_charcount_"+obj.name).innerHTML = obj.value.length;
+            }
+
+            jQuery(document).ready(function(){
+              // document ready function;
+              document.getElementById("<?php echo $item->id; ?>_charcount_imgtitle").innerHTML = document.getElementById("imgtitle_<?php echo $item->id; ?>").value.length;
+              document.getElementById("<?php echo $item->id; ?>_charcount_metadesc").innerHTML = document.getElementById("metadesc_<?php echo $item->id; ?>").value.length;
+            });
+          </script>
 <?php   endforeach; ?>
         </tbody>
         <tfoot>

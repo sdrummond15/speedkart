@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/maintenance.php $
-// $Id: maintenance.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -12,6 +10,8 @@
 \****************************************************************************************/
 
 defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
+use Joomla\CMS\Filter\InputFilter;
 
 /**
  * Maintenance model
@@ -467,13 +467,22 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
 
     $cids = JRequest::getVar('cid', array(), 'post', 'array');
 
-    JArrayHelper::toInteger($cids);
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
+
+    if(!count($cids))
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
+
+      return false;
+    }
+
+    $query = $this->_db->getQuery(true);
 
     if($refids)
     {
       // Get selected image IDs
-      $query = $this->_db->getQuery(true)
-            ->select('refid')
+      $query->select('refid')
             ->from($this->_db->qn(_JOOM_TABLE_MAINTENANCE))
             ->where('id IN ('.implode(',', $cids).')')
             ->where('type = 0');
@@ -488,24 +497,26 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
 
     $row = $this->getTable('joomgalleryimages');
 
-    if(!count($cids))
-    {
-      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
-
-      return false;
-    }
-
     $count = 0;
 
     // Loop through selected images
     foreach($cids as $cid)
     {
-      $error = false;
-
       if(!$row->load($cid))
       {
         continue;
       }
+
+      // Check whether we are allowed to delete this image
+      if(   !$this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$cid)
+        && (!$this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.image.'.$cid) || !$row->owner || $row->owner != $this->_user->get('id')))
+      {
+        JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED').' (ID:'.$cid.')', 'error');
+
+        continue;
+      }
+
+      $error = false;
 
       // Database query to check if there are other images with this thumbnail
       // assigned and how many
@@ -597,6 +608,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       }
       else
       {
+        JPluginHelper::importPlugin('content');
         $this->_mainframe->triggerEvent('onContentAfterDelete', array(_JOOM_OPTION.'.image', $row));
       }
 
@@ -638,7 +650,15 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
 
     $cids = JRequest::getVar('cid', array(), 'post', 'array');
 
-    JArrayHelper::toInteger($cids);
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
+
+    if(!count($cids))
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_CATEGORIES_SELECTED'));
+
+      return false;
+    }
 
     if(!$recursion_level)
     {
@@ -665,13 +685,6 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
 
     $row = $this->getTable('joomgallerycategories');
 
-    if(!count($cids))
-    {
-      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_CATEGORIES_SELECTED'));
-
-      return false;
-    }
-
     $count = 0;
     $extant_images  = false;
     $extant_subcats = false;
@@ -679,6 +692,20 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
     // Loop through selected categories
     foreach($cids as $cid)
     {
+      if(!$row->load($cid))
+      {
+        continue;
+      }
+
+      // Check whether we are allowed to delete this category
+      if(   !$this->_user->authorise('core.delete', _JOOM_OPTION.'.category.'.$cid)
+        && (!$this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.category.'.$cid) || !$row->owner || $row->owner != $this->_user->get('id')))
+      {
+        JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED').' (ID:'.$cid.')', 'error');
+
+        continue;
+      }
+
       // Database query to check assigned images to category
       $query = $this->_db->getQuery(true)
             ->select('id')
@@ -784,6 +811,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       }
       else
       {
+        JPluginHelper::importPlugin('content');
         $this->_mainframe->triggerEvent('onContentAfterDelete', array(_JOOM_OPTION.'.category', $row));
       }
 
@@ -791,7 +819,6 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       {
         // Category deleted
         $count++;
-        $row->reorder('parent_id = '.$row->parent_id);
 
         // Delete the category in the maintenance table
         $query = $this->_db->getQuery(true)
@@ -931,6 +958,16 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
     foreach($images as $key => $id)
     {
       $row->load($id);
+
+      // Check whether we are allowed to edit this image
+      $asset = _JOOM_OPTION.'.image.'.$id;
+      if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || !$row->owner || $row->owner != $this->_user->get('id')))
+      {
+        JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED').' (ID:'.$id.')', 'error');
+
+        continue;
+      }
+
       $row->alias = '';
       $row->check();
 
@@ -963,6 +1000,15 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
     foreach($categories as $key => $id)
     {
       $row->load($id);
+
+      // Check whether we are allowed to edit this image
+      $asset = _JOOM_OPTION.'.category.'.$id;
+      if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || !$row->owner || $row->owner != $this->_user->get('id')))
+      {
+        JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED').' (ID:'.$id.')', 'error');
+
+        continue;
+      }
 
       // Trim slashes
       $row->catpath = trim($row->catpath, '/');
@@ -1011,6 +1057,9 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
     $user = JRequest::getInt('newuser', 0);
     $cids = JRequest::getVar('cid', array(), 'post', 'array');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
+
     if(!count($cids))
     {
       $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
@@ -1018,7 +1067,6 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       return false;
     }
 
-    JArrayHelper::toInteger($cids);
     $cid_string = implode(',', $cids);
 
     // Get selected image IDs
@@ -1035,11 +1083,42 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       return false;
     }
 
+    $edit_ids = array();
+    foreach ($ids as $id)
+    {
+      $row = $this->getTable('joomgalleryimages');
+      $row->load($id);
+
+      // Check whether we are allowed to edit this image
+      $asset = _JOOM_OPTION.'.image.'.$id;
+      if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || !$row->owner || $row->owner != $this->_user->get('id')))
+      {
+        // not allowed
+        JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED').' (ID:'.$id.')', 'error');
+
+        continue;
+      }
+      else
+      {
+        // allowed
+        array_push($edit_ids,$id);
+      }
+    }
+
+    if(empty($edit_ids))
+    {
+      return false;
+    }
+    else
+    {
+      $cid_string = implode(',', $edit_ids);
+    }
+
     // Set the new user
     $query->clear()
           ->update($this->_db->qn(_JOOM_TABLE_IMAGES))
           ->set('owner = '.$user)
-          ->where('id IN ('.implode(',', $ids).')');
+          ->where('id IN ('.implode(',', $edit_ids).')');
     $this->_db->setQuery($query);
     if(!$this->_db->query())
     {
@@ -1062,7 +1141,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       return false;
     }
 
-    return count($cids);
+    return count($edit_ids);
   }
 
   /**
@@ -1076,6 +1155,9 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
     $user = JRequest::getInt('newuser', 0);
     $cids = JRequest::getVar('cid', array(), 'post', 'array');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
+
     if(!count($cids))
     {
       $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_CATEGORIES_SELECTED'));
@@ -1083,7 +1165,6 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       return false;
     }
 
-    JArrayHelper::toInteger($cids);
     $cid_string = implode(',', $cids);
 
     // Get selected category IDs
@@ -1100,11 +1181,41 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       return false;
     }
 
+        $edit_ids = array();
+    foreach ($ids as $id)
+    {
+      $row = $this->getTable('joomgallerycategories');
+      $row->load($id);
+
+      // Check whether we are allowed to edit this category
+      $asset = _JOOM_OPTION.'.category.'.$id;
+      if(!$this->_user->authorise('core.edit', $asset) && (!$this->_user->authorise('core.edit.own', $asset) || !$row->owner || $row->owner != $this->_user->get('id')))
+      {
+        JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED').' (ID:'.$cid.')', 'error');
+
+        continue;
+      }
+      else
+      {
+        // allowed
+        array_push($edit_ids,$id);
+      }
+    }
+
+    if(empty($edit_ids))
+    {
+      return false;
+    }
+    else
+    {
+      $cid_string = implode(',', $edit_ids);
+    }
+
     // Set the new user
     $query->clear()
           ->update($this->_db->qn(_JOOM_TABLE_CATEGORIES))
           ->set('owner = '.$user)
-          ->where('cid IN ('.implode(',', $ids).')');
+          ->where('cid IN ('.implode(',', $edit_ids).')');
     $this->_db->setQuery($query);
     if(!$this->_db->query())
     {
@@ -1127,7 +1238,7 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
       return false;
     }
 
-    return count($cids);
+    return count($edit_ids);
   }
 
   /**
@@ -1140,7 +1251,19 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
   {
     jimport('joomla.filesystem.file');
 
+    // Check whether we are allowed to delete
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.delete'))
+    {
+      JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $orphans = JRequest::getVar('cid', array(), 'post', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($orphans, array($orphans));
 
     if(!count($orphans))
     {
@@ -1204,7 +1327,19 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
    */
   public function deleteOrphanedFolder()
   {
+    // Check whether we are allowed to delete
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.delete'))
+    {
+      JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $folders = JRequest::getVar('cid', array(), 'post', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($folders, array($folders));
 
     if(!count($folders))
     {
@@ -1269,7 +1404,19 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
    */
   public function addOrphans()
   {
+    // Check whether we are allowed to create
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.create'))
+    {
+      JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $cids = JRequest::getVar('cid', array(), '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
 
     if(!count($cids))
     {
@@ -1323,7 +1470,19 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
    */
   public function addOrphan()
   {
+    // Check whether we are allowed to create
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.create'))
+    {
+      JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $cids = JRequest::getVar('cid', array(), '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
 
     if(!count($cids))
     {
@@ -1436,7 +1595,19 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
    */
   public function addOrphanedFolders()
   {
+    // Check whether we are allowed to create
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.create'))
+    {
+      JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $cids = JRequest::getVar('cid', array(), '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
 
     if(!count($cids))
     {
@@ -1489,7 +1660,19 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
    */
   public function addOrphanedFolder()
   {
+    // Check whether we are allowed to create
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.create'))
+    {
+      JFactory::getApplication()->enqueueMessage(JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $cids = JRequest::getVar('cid', array(), '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
 
     if(!count($cids))
     {
@@ -1603,6 +1786,9 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
   {
     $cids = JRequest::getVar('cid', array(), 'post', 'array');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
+
     if(!count($cids))
     {
       $this->setError(JText::_('COM_JOOMGALLERY_MAIMAN_MSG_NO_FILES_SELECTED'));
@@ -1671,6 +1857,9 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
   {
     $cids = JRequest::getVar('cid', array(), 'post', 'array');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
+
     if(!count($cids))
     {
       $this->setError(JText::_('COM_JOOMGALLERY_MAIMAN_OF_MSG_NO_FOLDERS_SELECTED'));
@@ -1737,6 +1926,14 @@ class JoomGalleryModelMaintenance extends JoomGalleryModel
   {
     $cids   = JRequest::getVar('cid', array(), '', 'array');
     $types  = JRequest::getVar('type', array('thumb', 'img', 'orig'), '', 'array');
+
+    // Sanitize request inputs
+    $filter = InputFilter::getInstance();
+    JArrayHelper::toInteger($cids, array($cids));
+    foreach ($types as $key => $type)
+    {
+      $types[$key] = $filter->clean($type, 'cmd');
+    }
 
     if(!count($cids))
     {

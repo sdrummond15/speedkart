@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/joomordering.php $
-// $Id: joomordering.php 4384 2014-05-09 12:40:47Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -96,7 +94,7 @@ class JFormFieldJoomordering extends JFormField
       var originalOrder   = '.$originalOrder.';
       var originalParent  = '.$originalParent.';
       var orders          = new Array();'.$script.'
-      writeDynaList( \'class="inputbox" name="'.$this->name.'" id="'.$this->id.'"'.$disabled.' size="1"\', orders, originalParent, originalParent, originalOrder );
+      writeDynaList( \'class="inputbox" name="'.$this->name.'" id="'.$this->id.'"'.$disabled.' size="1"\', orders, originalParent, originalParent, originalOrder, document.currentScript.parentNode);
       jQuery(document).ready(function() {
         document.getElementById(\''.$parent_id.'\').addEvent(\'change\', function() {
           var catid = document.getElementById(\''.$parent_id.'\').value;

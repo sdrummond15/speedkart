@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/comments.php $
-// $Id: comments.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -22,6 +20,14 @@ defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 class JoomGalleryControllerComments extends JoomGalleryController
 {
   /**
+   * URL to redirect
+   *
+   * @param   string
+   * @since   3.6.0
+   */
+  protected $redirectURL = null;
+
+  /**
    * Constructor
    *
    * @return  void
@@ -30,6 +36,14 @@ class JoomGalleryControllerComments extends JoomGalleryController
   public function __construct()
   {
     parent::__construct();
+
+    // Get input variables
+    $source = JFactory::getApplication()->input->get('source','comments');
+
+    if($source == 'maintenance')
+    {
+      $this->redirectURL = 'maintenance&tab=comments';
+    }
 
     // Set view
     JRequest::setVar('view', 'comments');
@@ -51,6 +65,9 @@ class JoomGalleryControllerComments extends JoomGalleryController
     $cid      = JRequest::getVar('cid', array(), 'post', 'array');
     $task     = JRequest::getCmd('task');
     $publish  = ($task == 'publish');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cid, array($cid));
 
     if(empty($cid))
     {
@@ -88,6 +105,9 @@ class JoomGalleryControllerComments extends JoomGalleryController
     $task     = JRequest::getCmd('task');
     $publish  = ($task == 'approve');
 
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cid, array($cid));
+
     if(empty($cid))
     {
       $this->setRedirect($this->_ambit->getRedirectUrl(), JText::_('COM_JOOMGALLERY_COMMAN_MSG_NO_COMMENTS_SELECTED'));
@@ -119,6 +139,16 @@ class JoomGalleryControllerComments extends JoomGalleryController
    */
   public function remove()
   {
+    // Check whether we are allowed to delete
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.delete'))
+    {
+      // Redirect based on location where this task was launched
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     $model = $this->getModel('comments');
     $count = $model->delete();
     if($count === false){
@@ -131,7 +161,8 @@ class JoomGalleryControllerComments extends JoomGalleryController
       }
     }
 
-    $this->setRedirect($this->_ambit->getRedirectUrl(), $msg);
+    // Redirect based on location where this task was launched
+    $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), $msg);
   }
 
   /**
@@ -142,6 +173,15 @@ class JoomGalleryControllerComments extends JoomGalleryController
    */
   public function reset()
   {
+    // Check whether we are allowed to delete
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.delete'))
+    {
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
     // Delete all comments
     $query = $this->_db->getQuery(true)
           ->delete()
@@ -150,13 +190,13 @@ class JoomGalleryControllerComments extends JoomGalleryController
 
     if(!$this->_db->query())
     {
-      // Redirect to maintenance manager because this task is usually launched there
-      $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), $this->_db->getErrorMsg(), 'error');
+      // Redirect based on location where this task was launched
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), $this->_db->getErrorMsg(), 'error');
       return;
     }
 
-    // Redirect to maintenance manager because this task is usually launched there
-    $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), JText::_('COM_JOOMGALLERY_MAIMAN_CM_MSG_ALL_COMMENTS_DELETED'));
+    // Redirect based on location where this task was launched
+    $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), JText::_('COM_JOOMGALLERY_MAIMAN_CM_MSG_ALL_COMMENTS_DELETED'));
   }
 
   /**
@@ -178,8 +218,8 @@ class JoomGalleryControllerComments extends JoomGalleryController
 
     if(!$this->_db->query())
     {
-      // Redirect to maintenance manager because this task is usually launched there
-      $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), $this->_db->getErrorMsg(), 'error');
+      // Redirect based on location where this task was launched
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), $this->_db->getErrorMsg(), 'error');
 
       return;
     }
@@ -193,13 +233,49 @@ class JoomGalleryControllerComments extends JoomGalleryController
 
     if(!$this->_db->query())
     {
-      // Redirect to maintenance manager because this task is usually launched there
-      $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), $this->_db->getErrorMsg(), 'error');
+      // Redirect based on location where this task was launched
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), $this->_db->getErrorMsg(), 'error');
 
       return;
     }
 
-    // Redirect to maintenance manager because this task is usually launched there
-    $this->setRedirect($this->_ambit->getRedirectUrl('maintenance&tab=comments'), JText::_('COM_JOOMGALLERY_MAIMAN_CM_MSG_COMMENTS_SYNCHRONIZED'));
+    // Redirect based on location where this task was launched
+    $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), JText::_('COM_JOOMGALLERY_MAIMAN_CM_MSG_COMMENTS_SYNCHRONIZED'));
+  }
+
+  /**
+   * Deletes the stored IP addresses of all comments.
+   *
+   * @return  void
+   * @since   3.4
+   */
+  public function deleteip()
+  {
+    // Check whether we are allowed to delete
+    $canDo = JoomHelper::getActions();
+    if(!$canDo->get('core.delete'))
+    {
+      // Redirect based on location where this task was launched
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), JText::_('JLIB_RULES_NOT_ALLOWED'), 'error');
+
+      return false;
+    }
+
+    $query = $this->_db->getQuery(true)
+          ->update(_JOOM_TABLE_COMMENTS)
+          ->set('cmtip='."''");
+
+    $this->_db->setQuery($query);
+
+    if(!$this->_db->execute())
+    {
+      // Redirect based on location where this task was launched
+      $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), $this->_db->getErrorMsg(), 'error');
+
+      return;
+    }
+
+    // Redirect based on location where this task was launched
+    $this->setRedirect($this->_ambit->getRedirectUrl($this->redirectURL), JText::_('COM_JOOMGALLERY_MAIMAN_CM_MSG_COMMENTS_IPS_DELETED'));
   }
 }

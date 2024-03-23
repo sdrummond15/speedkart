@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/userpanel/view.html.php $
-// $Id: view.html.php 4224 2013-04-22 15:46:14Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -183,7 +181,8 @@ class JoomGalleryViewUserpanel extends JoomGalleryView
         $this->items[$key]->show_edit_icon = true;
       }
 
-      if($this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$this->items[$key]->id))
+      if (  $this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$this->items[$key]->id) 
+        || ($this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.image.'.$this->items[$key]->id) && $this->items[$key]->owner == $this->_user->get('id')))
       {
         $this->items[$key]->show_delete_icon = true;
       }

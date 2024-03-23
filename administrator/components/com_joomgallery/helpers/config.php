@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/config.php $
-// $Id: config.php 4267 2013-05-10 11:41:59Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -39,21 +37,33 @@ class JoomConfig extends JObject
   var $jg_checkupdate;
   var $jg_filenamewithjs;
   var $jg_filenamereplace;
+  var $jg_replaceimgtitle;
+  var $jg_replaceimgtext;
+  var $jg_replaceimgauthor;
+  var $jg_replaceimgdate;
+  var $jg_replacemetakey;
+  var $jg_replacemetadesc;
+  var $jg_replaceshowwarning;
   var $jg_thumbcreation;
   var $jg_fastgd2thumbcreation;
   var $jg_impath;
+  var $jg_delete_original;
+  var $jg_origautorot;
+  var $jg_originalquality;
   var $jg_resizetomaxwidth;
   var $jg_maxwidth;
+  var $jg_maxheight;
+  var $jg_detailautorot;
   var $jg_picturequality;
   var $jg_useforresizedirection;
   var $jg_cropposition;
   var $jg_thumbwidth;
   var $jg_thumbheight;
+  var $jg_thumbautorot;
   var $jg_thumbquality;
   var $jg_uploadorder;
   var $jg_useorigfilename;
   var $jg_filenamenumber;
-  var $jg_delete_original;
   var $jg_msg_upload_type;
   var $jg_msg_upload_recipients;
   var $jg_msg_download_type;
@@ -77,6 +87,7 @@ class JoomConfig extends JObject
   var $jg_ajaxcategoryselection;
   var $jg_disableunrequiredchecks;
   var $jg_use_listbox_max_user_count;
+  var $jg_adminsorting;
   var $jg_userspace;
   var $jg_useruploaddefaultcat;
   var $jg_approve;
@@ -115,6 +126,7 @@ class JoomConfig extends JObject
   var $jg_namedanoncomment;
   var $jg_anonapprovecom;
   var $jg_approvecom;
+  var $jg_storecommentip;
   var $jg_bbcodesupport;
   var $jg_smiliesupport;
   var $jg_anismilie;
@@ -129,7 +141,6 @@ class JoomConfig extends JObject
   var $jg_dyncropposition;
   var $jg_dyncropwidth;
   var $jg_dyncropheight;
-  var $jg_dyncropbgcol;
   var $jg_hideemptycats;
   var $jg_skipcatview;
   var $jg_imgalign;
@@ -268,6 +279,7 @@ class JoomConfig extends JObject
   var $jg_nameshields_others;
   var $jg_nameshields_unreg;
   var $jg_show_nameshields_unreg;
+  var $jg_storenametagip;
   var $jg_nameshields_height;
   var $jg_nameshields_width;
   var $jg_slideshow;
@@ -314,6 +326,7 @@ class JoomConfig extends JObject
   var $jg_showfavouritesdownload;
   var $jg_showfavouriteseditorlinks;
   var $jg_search;
+  var $jg_searchengine;
   var $jg_searchcols;
   var $jg_searchthumbalign;
   var $jg_searchtextalign;
@@ -336,6 +349,14 @@ class JoomConfig extends JObject
    * @var boolean
    */
   protected $_extended = false;
+
+  /**
+   * Contains all valid ORDER BY clauses for the image sorting
+   * options $jg_firstorder, $jg_secondorder and $jg_thirdorder.
+   *
+   * @var array
+   */
+  private static $_validImageSortingOrderByClauses = array('ordering ASC', 'ordering DESC', 'imgdate ASC', 'imgdate DESC', 'imgtitle ASC', 'imgtitle DESC', 'hits ASC', 'hits DESC');
 
   /**
    * Constructor
@@ -471,5 +492,19 @@ class JoomConfig extends JObject
     }
 
     return 'joom_settings'.$this->_id.'.css';
+  }
+
+  /**
+   * Returns a string containing a valid image sorting ORDER BY clause for a given index or an
+   * array containing all of them.
+   *
+   * @param   mixed  $index
+   * @return  mixed  A string containing a valid image sorting ORDER BY clause or an array
+   *                 containing all of them.
+   * @since   3.3
+   */
+  public static function getValidImageSortingOrderByClauses($index = false)
+  {
+    return $index !== false ? self::$_validImageSortingOrderByClauses[$index] : self::$_validImageSortingOrderByClauses;
   }
 }

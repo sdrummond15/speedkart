@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/image.php $
-// $Id: image.php 4331 2013-09-08 08:27:42Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -142,7 +140,7 @@ class JoomGalleryModelImage extends JoomGalleryModel
     $session_id = $session->getToken();
 
     $stoptime   = $this->_mainframe->getCfg('lifetime') * 60;
-    $ip         = $_SERVER['REMOTE_ADDR'];
+    $ip         = $this->_mainframe->input->server->getString('REMOTE_ADDR', '');
 
     // Delete all dated entries
     $query = $this->_db->getQuery(true)
@@ -232,6 +230,8 @@ class JoomGalleryModelImage extends JoomGalleryModel
   }
 
   /**
+   * Method not used anymore (since 3.6.0)
+   *
    * Method to include the watermark selected in
    * the configuration manager into a given image
    *
@@ -278,6 +278,10 @@ class JoomGalleryModelImage extends JoomGalleryModel
       case 3:
         $watermark  = imagecreatefrompng($watermark);
         $mime_wat   = 'image/png';
+        break;
+      case 18:
+        $watermark  = imagecreatefromwebp($watermark);
+        $mime_wat   = 'image/webp';
         break;
       default:
         $this->setError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info_wat[2]));
@@ -385,6 +389,10 @@ class JoomGalleryModelImage extends JoomGalleryModel
           $src_img  = imagecreatefrompng($file);
           $mime_img = 'image/png';
           break;
+        case 18:
+          $src_img  = imagecreatefromwebp($file);
+          $mime_img = 'image/webp';
+          break;
         default:
           $this->setError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info_img[2]));
 
@@ -459,6 +467,8 @@ class JoomGalleryModelImage extends JoomGalleryModel
   }
 
   /**
+   * Method not used anymore (since 3.6.0)
+   *
    * Method to crop a image
    *
    * @param   string    $img        Path to image
@@ -528,6 +538,10 @@ class JoomGalleryModelImage extends JoomGalleryModel
       // PNG
       case 3:
         $src_img = imagecreatefrompng($img);
+        break;
+      // WEBP
+      case 18:
+        $src_img = imagecreatefromwebp($img);
         break;
       default:
         $src_img = imagecreatefromjpeg($img);

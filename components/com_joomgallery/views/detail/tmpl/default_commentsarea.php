@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
       <a name="joomcomments"></a>
       <table width="100%" cellspacing="0" cellpadding="0" border="0">
         <tbody>
@@ -17,8 +29,10 @@
               <span><?php echo $comment->author; ?></span>
 <?php         if($this->params->get('manager_logged')): ?>
               <div class="jg_cmticons">
+<?php           if(!empty($comment->cmtip)): ?>
                 <a href="http://www.db.ripe.net/whois?form_type=simple&full_query_string=&searchtext=<?php echo $comment->cmtip;?>&do_search=Search" target="_blank">
                   <img src="<?php echo $this->_ambit->get('icon_url').'ip.gif'; ?>" alt="<?php echo $comment->cmtip; ?>" title="<?php echo $comment->cmtip; ?>" hspace="3" border="0" /></a>
+<?php           endif; ?>
                 <a href="<?php echo JRoute::_('index.php?task=comments.remove&id='.$this->image->id.'&cmtid='.$comment->cmtid); ?>">
                   <img src="<?php echo $this->_ambit->get('icon_url').'del.gif'; ?>" alt="<?php echo JText::_('COM_JOOMGALLERY_DETAIL_ALT_DELETE_COMMENT'); ?>" hspace="3" border="0" /></a>
               </div>

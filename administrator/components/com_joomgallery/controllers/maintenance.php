@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/controllers/maintenance.php $
-// $Id: maintenance.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -32,9 +30,9 @@ class JoomGalleryControllerMaintenance extends JoomGalleryController
     parent::__construct();
 
     // Access check
-    if(!JFactory::getUser()->authorise('core.admin', _JOOM_OPTION))
+    if(!JFactory::getUser()->authorise('core.manage', _JOOM_OPTION))
     {
-      $this->setRedirect(JRoute::_($this->_ambit->getRedirectUrl(''), false), 'You are not allowed to configure this component', 'notice');
+      $this->setRedirect(JRoute::_($this->_ambit->getRedirectUrl(''), false), JText::_('COM_JOOMGALLERY_COMMON_MSG_NOT_ALLOWED_TO_MANAGE', 'notice'));
       $this->redirect();
     }
 
@@ -509,6 +507,9 @@ class JoomGalleryControllerMaintenance extends JoomGalleryController
   {
     // Load the necessary image IDs
     $cids = JRequest::getVar('cid', array(), '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($cids, array($cids));
 
     if(!count($cids))
     {

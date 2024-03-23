@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Restricted access');
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
 $debug = JFactory::getConfig()->get('debug'); ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->_doc->language; ?>" lang="<?php echo $this->_doc->language; ?>" dir="<?php echo $this->_doc->direction; ?>">
@@ -45,6 +57,12 @@ $debug = JFactory::getConfig()->get('debug'); ?>
         Joomla.JText.load(strings);
       }
     })();
+    (function(window, document, $, undefined) {
+      $(document).ready(function(){
+        sessionStorage.setItem('joom.mini.prefix', '<?php echo (isset($this->prefix) ? $this->prefix : '') ?>');
+        sessionStorage.setItem('joom.mini.object', '<?php echo (isset($this->object) ? $this->object : '') ?>');
+      });
+    }(window, document, window.jQuery));
   </script>
   <!--[if lt IE 9]>
     <script src="<?php echo JUri::root(); ?>media/jui/js/html5.js"></script>

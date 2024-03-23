@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/maintenancecheck.php $
-// $Id: maintenancecheck.php 4324 2013-09-03 13:07:49Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -109,7 +107,7 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
     $types  = $this->_mainframe->getUserState('joom.maintenance.check.types');
     $index  = $this->_mainframe->getUserState('joom.maintenance.check.index');
 
-    $img_types = array('gif', 'jpg', 'png', 'jpeg', 'jpe');
+    $img_types = array('gif', 'jpg', 'png', 'jpeg', 'jpe', 'webp');
 
     // Create a list for all found folders and files
     $continue = true;
@@ -333,6 +331,9 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
           $table->check();
           $table->store();
         }
+
+        // Trigger the after check image event.
+        $this->_mainframe->triggerEvent('onJoomAfterCheckImage', array($image, $corrupt, $table->id));
       }
 
       if(!$refresher->check())
@@ -463,6 +464,9 @@ class JoomGalleryModelMaintenancecheck extends JoomGalleryModel
           $table->check();
           $table->store();
         }
+
+        // Trigger the after check category event.
+        $this->_mainframe->triggerEvent('onJoomAfterCheckCategory', array($category, $corrupt, $table->id));
       }
 
       if(!$refresher->check())

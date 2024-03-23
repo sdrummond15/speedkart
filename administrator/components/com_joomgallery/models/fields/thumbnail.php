@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/fields/thumbnail.php $
-// $Id: thumbnail.php 4201 2013-04-15 21:35:52Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -53,6 +51,9 @@ class JFormFieldThumbnail extends JFormField
       // Get category id from request
       $cids   = JRequest::getVar('cid', array(), '', 'array');
 
+      // Sanitize request inputs
+      JArrayHelper::toInteger($cids, array($cids));
+
       if(isset($cids[0]))
       {
         $catid = intval($cids[0]);
@@ -91,11 +92,6 @@ class JFormFieldThumbnail extends JFormField
 
     $doc->addScriptDeclaration(implode("\n", $script));
 
-    // Remove bottom border from modal header as we will not have a title
-    $css[] = '  #modalSelectThumbnail .modal-header {';
-    $css[] = '    border-bottom: none;';
-    $css[] = '  }';
-
     $doc->addStyleDeclaration(implode("\n", $css));
 
     // Get the image title
@@ -125,20 +121,22 @@ class JFormFieldThumbnail extends JFormField
                 . ($app->isAdmin() ? JText::_('COM_JOOMGALLERY_CATMAN_SELECT_THUMBNAIL') : JText::_('COM_JOOMGALLERY_COMMON_SELECT'))
                 . '</a>';
 
-    $html[] = JHtmlBootstrap::renderModal(
-                'modalSelectThumbnail', array(
-                  'url'     => $link . '&amp;' . JSession::getFormToken() . '=1"',
-                  'width'   => '620px',
-                  'height'  => '390px'
-                 )
-              );
-
     $html[] = '<button id="' . $this->id . '_clear" class="btn' . ($this->value ? '' : ' hidden') . ' hasTooltip" title="'
                 . ($app->isAdmin() ? JHtml::tooltipText('COM_JOOMGALLERY_CATMAN_REMOVE_CATTHUMB_TIP') : JHtml::tooltipText('COM_JOOMGALLERY_COMMON_REMOVE_CATTHUMB_TIP'))
                 . '" onclick="return joom_clearthumb()"><span class="icon-remove"></span></button>';
 
     $html[] = '</span>';
     $html[] = '<input type="hidden" id="' . $this->id . '_id" name="' . $this->name . '" value="' . $this->value . '"/>';
+
+    $html[] = JHtmlBootstrap::renderModal(
+                'modalSelectThumbnail', array(
+                  'url'     => $link . '&amp;' . JSession::getFormToken() . '=1"',
+                  'title'   => ($app->isAdmin() ? JText::_('COM_JOOMGALLERY_CATMAN_SELECT_THUMBNAIL_TIP') : JText::_('COM_JOOMGALLERY_COMMON_SELECT_THUMBNAIL_TIP')),
+                  'width'   => '620px',
+                  'height'  => '390px',
+                  'footer'  => '<a role="button" class="btn" data-dismiss="modal" aria-hidden="true">' . JText::_('JLIB_HTML_BEHAVIOR_CLOSE') . '</a>'
+                )
+              );
 
     return implode("\n", $html);
   }

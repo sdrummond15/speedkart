@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
       if($this->_config->get('jg_anchors')): ?>
   <a name="subcategory"></a>
 <?php endif;
@@ -35,9 +47,19 @@
         </a>
       </div>
 <?php $this->params->set('show_upload_icon', 0);
-      endif; ?>
+      endif;
+      if($this->_config->get('jg_showsubcathead') == 2 && $this->totalimages == 0):
+        echo $this->category->name; ?>
+      </div>
+<?php   if($this->_config->get('jg_showcatdescriptionincat') == 1): ?>
+      <div class="jg_catdescr">
+        <?php echo JHTML::_('joomgallery.text', $this->category->description); ?>
+      </div>
+<?php endif; ?>
+<?php else: ?>
       <?php echo JText::_('COM_JOOMGALLERY_COMMON_SUBCATEGORIES'); ?>
-    </div>
+      </div>
+<?php endif; ?>
 <?php endif;
       $cat_count = count($this->categories);
       $num_rows  = ceil($cat_count / $this->_config->get('jg_colsubcat'));
@@ -54,7 +76,7 @@
         <div class="jg_imgalign_catsubs">
           <div class="<?php echo $row->photocontainer; ?>">
             <a title="<?php echo $row->name; ?>" href="<?php echo $row->link; ?>">
-              <img src="<?php echo $row->thumb_src; ?>" hspace="4" vspace="0" class="jg_photo" alt="<?php echo $row->name; ?>" />
+              <img src="<?php echo $row->thumb_src; ?>" hspace="4" vspace="0" class="jg_photo" alt="<?php echo $row->name; ?>" loading="lazy" />
             </a>
 <?php       endif;
           endif;
@@ -65,6 +87,7 @@
         <div class="<?php echo $row->textcontainer; ?>">
           <ul>
             <li>
+              <?php echo JHTML::_('joomgallery.icon', 'arrow.png', 'arrow'); ?>
 <?php     if(in_array($row->access, $this->_user->getAuthorisedViewLevels())): ?>
               <a href="<?php echo $row->link; ?>">
                 <?php echo $this->escape($row->name); ?></a>

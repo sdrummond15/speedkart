@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/category.php $
-// $Id: category.php 4345 2013-11-16 05:53:14Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                   **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -418,6 +416,8 @@ class JoomGalleryModelCategory extends JoomGalleryModel
     $categories = array_unique(array_merge($categories, array($catid)));
     $this->_mainframe->setUserState('joom.unlockedCategories', $categories);
 
+    $this->_mainframe->triggerEvent('onJoomAfterUnlockCat', array($catid));
+
     return true;
   }
 
@@ -442,7 +442,7 @@ class JoomGalleryModelCategory extends JoomGalleryModel
     if(empty($this->_category))
     {
       $query = $this->_db->getQuery(true)
-            ->select('cid, name, parent_id, description, password, owner, metakey, metadesc, params')
+            ->select('cid, name, parent_id, description, password, owner, metakey, metadesc, params, allow_download')
             ->from(_JOOM_TABLE_CATEGORIES)
             ->where('cid       = '.$this->_id)
             ->where('published = 1')

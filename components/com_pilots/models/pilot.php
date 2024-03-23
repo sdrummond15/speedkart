@@ -11,9 +11,10 @@ class PilotsModelPilot extends JModelLegacy
     public static function getPilotoDetail(){
 
         $piloto = $_GET['id_piloto'];
+
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $query->select('p.name AS nome, t.title AS equipe, p.photo_detail AS piloto, p.photo_kart AS pilotokart ');
+        $query->select('p.name AS nome, t.title AS equipe, p.photo_detail AS piloto, p.photo_kart AS pilotokart');
         $query->from('#__pilots As p');
         $query->join('LEFT', '#__teams AS t ON p.id_team = t.id');
         $query->where('p.published = 1 AND p.id ='.$piloto);

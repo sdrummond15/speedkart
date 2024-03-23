@@ -42,7 +42,7 @@ $assoc = JLanguageAssociations::isEnabled();
                         <?php echo $this->form->renderField('date'); ?>
                         <?php echo $this->form->renderField('hour'); ?>
                         <?php echo $this->form->renderField('photo'); ?>
-                        <?php echo $this->form->renderField('grid_order'); ?>
+                        <!-- <?php echo $this->form->renderField('grid_order'); ?> -->
                         <?php echo $this->form->renderField('id_championship'); ?>
                     </div>
                 </div>

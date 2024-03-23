@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/html/joomselect.php $
-// $Id: joomselect.php 4398 2014-06-11 13:39:02Z erftralle $
 /******************************************************************************\
 **   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -401,6 +399,41 @@ abstract class JHtmlJoomSelect
     if(!$attr)
     {
       $attr = 'class="inputbox" size="'.count($options).'"';
+    }
+
+    return JHtml::_('select.genericlist', $options, $name, $attr, 'value', 'text', $selected);
+  }
+
+  /**
+   * Creates a HMTL select list of SearchEngine options
+   *
+   * @param   string  $name         Name of the field
+   * @param   string  $selected     Option that should be preselected.
+   * @param   string  $attr         Optional attributes for the HTML element
+   * @param   array   $extra        Array of additional options for the select list
+   * @return  string  The HTML select list of SearchEngine options
+   * @since   3.0
+   */
+  public static function searchEngine($name, $selected = null, $attr = null, $extra = array())
+  {
+    // Additional options are placed first in the list
+    $options = $extra;
+
+    // Default option
+    $options[] = JHtml::_('select.option', 'joomgallery', JText::_('COM_JOOMGALLERY'));
+
+    // Load plugins in order to search for additional SearchEngine plugins
+    JPluginHelper::importPlugin('joomgallery');
+    $plugins = JDispatcher::getInstance()->trigger('onJoomSearchEngineGetName');
+
+    foreach($plugins as $plugin)
+    {
+      $options[] = JHtml::_('select.option', $plugin);
+    }
+
+    if(!$attr)
+    {
+      $attr = 'class="inputbox" size="'.max(count($options),2).'"';
     }
 
     return JHtml::_('select.genericlist', $options, $name, $attr, 'value', 'text', $selected);

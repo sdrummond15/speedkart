@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/search.php $
-// $Id: search.php 4253 2013-05-06 20:26:05Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -74,40 +72,60 @@ class JoomGalleryModelSearch extends JoomGalleryModel
       // Create query object
       $query = $this->_db->getQuery(true);
 
-      // Create search part of the query
-      $where = '(u.username       LIKE '.$this->_db->q('%'.$searchstring.'%').'
-              OR a.imgtitle       LIKE '.$this->_db->q('%'.$searchstring.'%').'
-              OR LOWER(a.imgtext) LIKE '.$this->_db->q('%'.$searchstring.'%');
+      if($this->_config->get('jg_searchengine') == 'joomgallery')
+      {
+        // Create search part of the query
+        $where   = '(u.username       LIKE '.$this->_db->q('%'.$searchstring.'%').'
+                  OR a.imgtitle       LIKE '.$this->_db->q('%'.$searchstring.'%').'
+                  OR LOWER(a.imgtext) LIKE '.$this->_db->q('%'.$searchstring.'%');
+        $context = _JOOM_OPTION.'.search';
+      }
+      else
+      {
+        $where   = '(';
+        $context = _JOOM_OPTION.'.'.$this->_config->get('jg_searchengine');
+      }
 
       // Add query parts from plugins
-      $aliases = array('images' => 'a', 'categories' => 'ca');
-      $plugins = $this->_mainframe->triggerEvent('onJoomSearch', array($searchstring, $aliases, _JOOM_OPTION.'.search'));
+      $aliases = array('images' => 'a', 'categories' => 'ca', 'users' => 'u');
+      $plugins = $this->_mainframe->triggerEvent('onJoomSearch', array($searchstring, $aliases, $context));
+
       foreach($plugins as $plugin)
       {
-        if(isset($plugin['images.select']))
+        $plugin_searchengines = array('joomgallery');
+        if(isset($plugin['searchengines']))
         {
-          $query->select($plugin['images.select']);
+          $plugin_searchengines = $plugin['searchengines'];
         }
-        if(isset($plugin['images.leftjoin']))
-        {
-          $query->leftJoin($plugin['images.leftjoin']);
-        }
-        if(isset($plugin['images.where']))
-        {
-          $query->where($plugin['images.where']);
-        }
-        if(isset($plugin['images.where.or']))
-        {
-          $where .= '
-              OR '.$plugin['images.where.or'];
+
+        if(in_array($this->_config->get('jg_searchengine'), $plugin_searchengines))
+		    {
+          if(isset($plugin['images.select']))
+          {
+            $query->select($plugin['images.select']);
+          }
+          if(isset($plugin['images.leftjoin']))
+          {
+            $query->leftJoin($plugin['images.leftjoin']);
+          }
+          if(isset($plugin['images.where']))
+          {
+            $query->where($plugin['images.where']);
+          }
+          if(isset($plugin['images.where.or']))
+          {
+            $where .= '
+                OR '.$plugin['images.where.or'];
+          }
         }
       }
 
       // Only now the search part can be finalized
       $where .= ')';
 
+
       // General select clause of the query
-      $query->select('a.*, '.JoomHelper::getSQLRatingClause('a').' AS rating, u.username, ca.cid, ca.name AS name');
+      $query->select('a.*, '.JoomHelper::getSQLRatingClause('a').' AS rating, u.username, ca.cid, ca.name AS name, ca.allow_download AS allow_download');
 
       // Count comments of each image if required
       if($this->_config->get('jg_showcatcom'))
@@ -124,9 +142,12 @@ class JoomGalleryModelSearch extends JoomGalleryModel
       // Main part of the query
       $query->from(_JOOM_TABLE_IMAGES.' AS a')
             ->innerJoin(_JOOM_TABLE_CATEGORIES.' AS ca ON a.catid = ca.cid')
-            ->leftJoin('#__users AS u ON a.owner = u.id')
-            ->where($where)
-            ->where('a.published = 1')
+            ->leftJoin('#__users AS u ON a.owner = u.id');
+      if($this->_config->get('jg_searchengine') == 'joomgallery')
+      {
+        $query->where($where);
+      }
+      $query->where('a.published = 1')
             ->where('a.approved = 1')
             ->where('a.access IN ('.$authorisedViewLevels.')')
             ->where('ca.published = 1')

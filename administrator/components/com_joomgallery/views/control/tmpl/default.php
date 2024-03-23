@@ -1,4 +1,15 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
 
 JHtml::_('bootstrap.tooltip');
 ?>
@@ -22,8 +33,16 @@ JHtml::_('bootstrap.tooltip');
     </div>
     <div class="<?php echo $this->params->get('show_available_extensions') ? 'span6' : 'span8'; ?>">
       <div class="row-fluid">
-        <!-- Begin News -->
         <div class="span12">
+          <div class="well well-small">
+            <div class="module-title nav-header">
+              <?php echo JText::_('COM_JOOMGALLERY_JOOMGALLERY4_UPGRADE'); ?>
+            </div>
+            <div class="alert alert-info">
+              <?php echo JText::_('COM_JOOMGALLERY_JOOMGALLERY4_INFO'); ?>
+            </div>
+          </div>
+          <!-- Begin News -->        
 <?php     foreach ($this->modules as $module)
           {
             $output = JModuleHelper::renderModule($module, array('style' => 'well well-small'));

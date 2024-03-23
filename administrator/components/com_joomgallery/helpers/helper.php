@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/helper.php $
-// $Id: helper.php 4330 2013-09-08 08:19:39Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -63,6 +61,10 @@ class JoomHelper
     {
       unset($controllers['config']);
       unset($controllers['cssedit']);
+    }
+
+    if(!$canDo->get('core.manage'))
+    {
       unset($controllers['maintenance']);
     }
 
@@ -98,7 +100,7 @@ class JoomHelper
     $user   = JFactory::getUser();
     $result = new JObject();
 
-    $actions = array('core.admin', 'core.manage', 'joom.upload', 'joom.upload.inown', 'core.create', 'joom.create.inown', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete');
+    $actions = array('core.admin', 'core.manage', 'joom.upload', 'joom.upload.inown', 'core.create', 'joom.create.inown', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete', 'joom.delete.own');
 
     switch($type)
     {
@@ -150,6 +152,10 @@ class JoomHelper
       if($action == 'core.edit')
       {
         $action2 = 'core.edit.own';
+      }
+      if($action == 'core.delete')
+      {
+        $action2 = 'joom.delete.own';
       }
 
       if(     $user->authorise($action, _JOOM_OPTION.'.category.'.$category->cid)

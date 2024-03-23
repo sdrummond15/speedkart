@@ -18,6 +18,7 @@ joom_local.css.README umbenennen und anpassen
 }
 .jg_element_txt {
   text-align:center !important;
+  padding: 8px 10px;
 }
 .jg_element_txt_subs {
   text-align:center !important;
@@ -35,7 +36,7 @@ joom_local.css.README umbenennen und anpassen
 
 }
 .jg_catelem_cat a{
-  height:260px;
+  height:300px;
 }
 .jg_catelem_photo {
   display:block;
@@ -47,12 +48,12 @@ joom_local.css.README umbenennen und anpassen
 
 /* Subcategory view */
 .jg_subcatelem_cat, .jg_subcatelem_cat_r{
-  width:24%;
+  width:49%;
   float:left;
   text-align:center !important;
 }
 .jg_subcatelem_cat a{
-  height:260px;
+  height:300px;
 }
 .jg_subcatelem_photo {
   text-align:center !important;

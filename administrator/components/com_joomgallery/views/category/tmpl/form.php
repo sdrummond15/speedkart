@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Restricted access');?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
 <script language="javascript" type="text/javascript">
   Joomla.submitbutton = function(task)
   {
@@ -82,11 +94,11 @@
             </div>
           </div>
         </div>
-
         <div class="row-fluid">
           <h4><?php echo JText::_('JDETAILS');?></h4>
           <hr />
-
+        </div>
+        <div class="row-fluid">
           <div class="span6">
             <div class="control-group">
               <div class="control-label">
@@ -210,7 +222,53 @@
         </div>
       </div>
       <div class="tab-pane" id="options">
-        <?php echo $this->loadTemplate('options'); ?>
+        <div class="row-fluid">
+          <div class="span6">
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('allow_download'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('allow_download'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('allow_comment'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('allow_comment'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('allow_rating'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('allow_rating'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('allow_watermark'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('allow_watermark'); ?>
+              </div>
+            </div>
+            <div class="control-group">
+              <div class="control-label">
+                <?php echo $this->form->getLabel('allow_watermark_download'); ?>
+              </div>
+              <div class="controls">
+                <?php echo $this->form->getInput('allow_watermark_download'); ?>
+              </div>
+            </div>
+          </div>
+          <div class="span6">
+            <?php echo $this->loadTemplate('options'); ?>
+          </div>
+        </div>
       </div>
       <div class="tab-pane" id="metadata">
         <?php echo $this->loadTemplate('metadata'); ?>

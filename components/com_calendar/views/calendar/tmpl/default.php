@@ -53,7 +53,7 @@
         $table .= '<td>' . $dia . ' de ' . $m . '</td>';
         $table .= '<td>' . $calendar->hora . '</td>';
         $table .= '<td><a href="index.php/campeonato/todas-etapas/circuit?id_circuito=' . $calendar->id_circuito . '">' . $calendar->circuito . '</a></td>';
-        $table .= '<td>' . $calendar->grid . '</td>';
+        // $table .= '<td>' . $calendar->grid . '</td>';
         $table .= '</tr>';
 
     endforeach;
@@ -69,7 +69,7 @@
             <td>Data</td>
             <td>Horário</td>
             <td>Circuito</td>
-            <td>Grid</td>
+            <!-- <td>Grid</td> -->
         </tr>
         </thead>
         <tbody>

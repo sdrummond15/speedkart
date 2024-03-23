@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/image/view.raw.php $
-// $Id: view.raw.php 4224 2013-04-22 15:46:14Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -64,8 +62,26 @@ class JoomGalleryViewImage extends JoomGalleryView
       // Downloading
       if($download)
       {
-        // Is the download allowed for the user group of the current user?
-        if(   !$this->_config->get('jg_download')
+        // Get category settings
+        $cat_allow_download           = -1;
+        $cat_allow_watermark_download = -1;
+
+        $this->_db = JFactory::getDBO();
+        $query = $this->_db->getQuery(true)
+              ->select('c.allow_download, c.allow_watermark_download')
+              ->from(_JOOM_TABLE_IMAGES . ' AS a')
+              ->leftJoin(_JOOM_TABLE_CATEGORIES . ' AS c ON c.cid = a.catid')
+              ->where('a.id = ' . JRequest::getInt('id'));
+        $this->_db->setQuery($query);
+
+        if(!empty($row = $this->_db->loadRow()))
+        {
+          $cat_allow_download           = $row[0];
+          $cat_allow_watermark_download = $row[1];
+        }
+
+        // Is the download allowed for the user group of the current user and in this category?
+        if(   !($cat_allow_download == (-1) ? $this->_config->get('jg_download') : $cat_allow_download)
           ||  (!$this->_config->get('jg_download_unreg') && !$this->_user->get('id'))
           )
         {
@@ -92,7 +108,7 @@ class JoomGalleryViewImage extends JoomGalleryView
         }
 
         // Include watermark when downloading image?
-        if($this->_config->get('jg_downloadwithwatermark'))
+        if(($cat_allow_watermark_download == (-1) ? $this->_config->get('jg_downloadwithwatermark') : $cat_allow_watermark_download))
         {
           $include_watermark = true;
         }
@@ -136,7 +152,17 @@ class JoomGalleryViewImage extends JoomGalleryView
         }
 
         // Include watermark when displaying image in the detail view?
-        if($this->_config->get('jg_watermark'))
+        // Check category settings
+        $this->_db = JFactory::getDBO();
+        $query = $this->_db->getQuery(true)
+              ->select('c.allow_watermark')
+              ->from(_JOOM_TABLE_IMAGES . ' AS a')
+              ->innerJoin(_JOOM_TABLE_CATEGORIES . ' AS c ON c.cid = a.catid')
+              ->where('a.id = ' . JRequest::getInt('id'));
+        $this->_db->setQuery($query);
+        $cat_allow_watermark = $this->_db->loadResult();
+
+        if(($cat_allow_watermark == (-1) ? $this->_config->get('jg_watermark') : $cat_allow_watermark))
         {
           $include_watermark = true;
         }
@@ -183,6 +209,9 @@ class JoomGalleryViewImage extends JoomGalleryView
       case 3:
         $mime = 'image/png';
         break;
+      case 18:
+        $mime = 'image/webp';
+        break;
       default:
         return $this->displayError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $info[2]));
     }
@@ -200,53 +229,115 @@ class JoomGalleryViewImage extends JoomGalleryView
     JResponse::setHeader('Content-disposition', $disposition.'; filename='.basename($img));
 
     // Inlude watermark and crop
-    if(($include_watermark || $crop_image) && !$model->isGif($img))
+    // Create tmp file
+    $tmp_folder = JFactory::getApplication()->get('tmp_path');
+    $img_output   = $tmp_folder.'/tmp_'.basename($img);
+    if($crop_image || $include_watermark)
     {
-      $img_resource = null;
-      if($crop_image)
+      if(!JFile::copy($img, $img_output))
       {
-        $croppos  = JRequest::getInt('pos');
-        $offsetx  = JRequest::getInt('x');
-        $offsety  = JRequest::getInt('y');
-        $img_resource = $model->cropImage($img, $cropwidth, $cropheight, $croppos, $offsetx, $offsety);
-      }
-
-      if($include_watermark)
-      {
-        if(!$img_resource = $model->includeWatermark($img, $img_resource, $cropwidth, $cropheight))
-        {
-          return $this->displayError($model->getError());
-        }
-      }
-
-      if(!$img_resource)
-      {
-        echo JFile::read($img);
-      }
-      else
-      {
-        switch($mime)
-        {
-          case 'image/gif':
-            imagegif($img_resource);
-            break;
-          case 'image/png':
-            imagepng($img_resource);
-            break;
-          case 'image/jpeg':
-            $quali = JRequest::getInt('quali', 95);
-            imagejpeg($img_resource, null, $quali);
-            break;
-          default:
-            return $this->displayError(JText::sprintf('COM_JOOMGALLERY_COMMON_MSG_MIME_NOT_ALLOWED', $mime));
-        }
-
-        imagedestroy($img_resource);
+        return $this->displayError(JText::_('COM_JOOMGALLERY_COMMON_MSG_IMAGE_NOT_EXIST'));
       }
     }
     else
     {
-      echo JFile::read($img);
+      $img_output = $img;
+    }
+
+    // crop image
+    if ($crop_image)
+    {
+      $croppos     = JRequest::getInt('pos');
+      $offsetx     = JRequest::getInt('x');   // what are this variables for?
+      $offsety     = JRequest::getInt('y');   // what are this variables for? --> they werent used in the past either...
+      $method      = $this->_config->get('jg_thumbcreation');
+      $setting      = 3;  // 0=noresize 1=height,2=width,3=crop or 4=maxdimension
+      $debugoutput = '';
+      if($type == 'thumb')
+      {
+        $metadata  = false;
+        $animation = false;
+        $sharpen   = true;
+      }
+      elseif($type == 'orig')
+      {
+        $metadata  = true;
+        $animation = true;
+        $sharpen   = false;
+      }
+      else
+      {
+        $metadata  = false;
+        $animation = true;
+        $sharpen   = false;
+      }
+
+      $success = JoomIMGtools::resizeImage($debugoutput,$img,$img_output,$setting,$cropwidth,$cropheight,$method,100,$croppos,0,false,$metadata,$animation,$sharpen);
+
+      if (!$success)
+      {
+        $this->displayError('Image cropping not successful');
+      }
+    }
+
+    // watermark image
+    if($include_watermark)
+    {
+      if($crop_image)
+      {
+        $src_img = $img_output;
+      }
+      else
+      {
+        $src_img = $img;
+      }
+      $wtm_file      = JPath::clean($this->_ambit->get('wtm_path').$this->_config->get('jg_wmfile'));
+      $method        = $this->_config->get('jg_thumbcreation');
+      $position      = $this->_config->get('jg_watermarkpos');
+      $watermarkzoom = $this->_config->get('jg_watermarkzoom');
+      $watermarksize = $this->_config->get('jg_watermarksize');
+      $opacity       = 100;
+      $debugoutput   = '';
+      if($type == 'thumb')
+      {
+        $metadata  = false;
+        $animation = false;
+      }
+      elseif($type == 'orig')
+      {
+        $metadata  = true;
+        $animation = true;
+      }
+      else
+      {
+        $metadata  = false;
+        $animation = true;
+      }
+
+      // Checks if watermark file is existent
+      if(!JFile::exists($wtm_file))
+      {
+        $this->displayError(JText::_('COM_JOOMGALLERY_COMMON_ERROR_WATERMARK_NOT_EXIST'));
+      }
+
+      $success = JoomIMGtools::watermarkImage($debugoutput,$src_img,$img_output,$wtm_file,$method,$position,$watermarkzoom,$watermarksize,$opacity,$metadata,$animation);
+
+      if (!$success)
+      {
+        $this->displayError(JText::_($debugoutput));
+      }
+    }
+
+    // output image
+    echo JFile::read($img_output);
+
+    if($crop_image || $include_watermark)
+    {
+      // delete tmp file
+      if(JFile::exists($img_output))
+      {
+        JFile::delete($img_output);
+      }
     }
   }
 

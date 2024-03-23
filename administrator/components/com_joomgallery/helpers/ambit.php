@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/ambit.php $
-// $Id: ambit.php 4076 2013-02-12 10:35:29Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -408,6 +406,40 @@ class JoomAmbit extends JObject
     }
 
     return $images[$id];
+  }
+
+  /**
+   * Returns the database row of a specific category
+   *
+   * @param   int     $id The ID of the category to load
+   * @return  object  The database row of the category
+   */
+  public function getCatObject($id)
+  {
+    static $categories  = array();
+    static $row;
+
+    if(!isset($categories[$id]))
+    {
+      if(!isset($row))
+      {
+        $row = JTable::getInstance('joomgallerycategories', 'Table');
+      }
+
+      if(!$row->load($id))
+      {
+        JError::raiseError(500, JText::sprintf('Category with ID %d not found', $id));
+      }
+
+      $properties   = $row->getProperties();
+      $categories[$id]  = new stdClass();
+      foreach($properties as $key => $value)
+      {
+        $categories[$id]->$key = $value;
+      }
+    }
+
+    return $categories[$id];
   }
 
   /**

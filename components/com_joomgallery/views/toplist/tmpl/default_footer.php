@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.'); ?>
+
 <?php if($this->params->get('show_footer_separator')): ?>
   <div class="jg-footer">
     &nbsp;
@@ -61,7 +73,7 @@
       if($this->params->get('show_credits', 0)): ?>
   <div class="jg_clearboth"></div>
   <div align="center" class="jg_poweredbydiv">
-    <a href="http://www.joomgallery.net" target="_blank">
+    <a href="https://www.joomgalleryfriends.net" target="_blank">
       <img src="<?php echo $this->_ambit->getIcon('powered_by.gif'); ?>" class="jg_poweredby" alt="Powered by JoomGallery" />
     </a>
   </div>

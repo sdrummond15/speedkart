@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/views/favourites/view.html.php $
-// $Id: view.html.php 4077 2013-02-12 10:46:13Z erftralle $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -131,25 +129,28 @@ class JoomGalleryViewFavourites extends JoomGalleryView
           $row->show_edit_icon = true;
         }
 
-        if($this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$row->id))
+        if(   $this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$row->id)
+          || ($this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.image.'.$row->id) && $row->imgowner == $this->_user->get('id')))
         {
           $row->show_delete_icon = true;
         }
       }
-    }
 
-    // Download Icon
-    if($this->_config->get('jg_download') && $this->_config->get('jg_showfavouritesdownload'))
-    {
-      if($this->_user->get('id') || $this->_config->get('jg_download_unreg'))
+      // Download Icon
+      $rows[$key]->show_download_icon = false;
+      if(  ($row->allow_download == (-1) ? $this->_config->get('jg_download') : $row->allow_download)
+        && $this->_config->get('jg_showfavouritesdownload'))
       {
-        $params->set('show_download_icon', 1);
-      }
-      else
-      {
-        if($this->_config->get('jg_download_hint'))
+        if($this->_user->get('id') || $this->_config->get('jg_download_unreg'))
         {
-          $params->set('show_download_icon', -1);
+          $rows[$key]->show_download_icon = 1;
+        }
+        else
+        {
+          if($this->_config->get('jg_download_hint'))
+          {
+            $rows[$key]->show_download_icon = -1;
+          }
         }
       }
     }

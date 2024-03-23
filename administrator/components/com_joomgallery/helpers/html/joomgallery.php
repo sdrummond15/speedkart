@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/helpers/html/joomgallery.php $
-// $Id: joomgallery.php 4404 2014-06-26 21:23:58Z chraneco $
 /******************************************************************************\
 **   JoomGallery 3                                                            **
 **   By: JoomGallery::ProjectTeam                                             **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                      **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                      **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                  **
 **   Released under GNU GPL Public License                                    **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look             **
@@ -575,7 +573,7 @@ abstract class JHtmlJoomGallery
     switch($open)
     {
       case '0': // Detail view
-        $link = JRoute::_('index.php?view=detail&id='.$image->id);
+        $link = JRoute::_('index.php?view=detail&id='.$image->id.JHTML::_('joomgallery.anchor'));
         break;
       case 1: // New window
         $link = $img_url."\" target=\"_blank";
@@ -1127,12 +1125,12 @@ abstract class JHtmlJoomGallery
 <div class="center">
   <p>
     <br />
-    <a href="http://www.joomgallery.net" target="_blank">
+    <a href="https://www.joomgalleryfriends.net" target="_blank">
       <img src="<?php echo $ambit->getIcon('powered_by.gif'); ?>"  class="jg-poweredby" alt="Powered by JoomGallery" />
     </a>
   </p>
   By:
-  <a href="mailto:team@joomgallery.net">
+  <a href="mailto:team@joomgalleryfriends.net">
     JoomGallery::ProjectTeam
   </a>
   <br />

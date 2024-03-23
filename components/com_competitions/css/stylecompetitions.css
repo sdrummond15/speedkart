@@ -1,7 +1,11 @@
+
 .classificacao {
     width: 100%;
     display: table;
+    
 }
+
+
 
 .classificacao h1 {
     color: #FFF;
@@ -18,6 +22,7 @@
     margin: 0px auto 60px auto;
     background-color: #FFF;
     color: #000;
+    
 }
 
 .classificacao table tr th {
@@ -76,6 +81,7 @@
 
 .azul {
     color: #0000FF;
+    
 }
 
 .cinza {

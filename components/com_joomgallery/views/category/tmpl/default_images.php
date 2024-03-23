@@ -1,4 +1,16 @@
-<?php defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+<?php
+/****************************************************************************************\
+**   JoomGallery 3                                                                      **
+**   By: JoomGallery::ProjectTeam                                                       **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
+**   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
+**   Released under GNU GPL Public License                                              **
+**   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
+**   at administrator/components/com_joomgallery/LICENSE.TXT                            **
+\****************************************************************************************/
+
+defined('_JEXEC') or die('Direct Access to this location is not allowed.');
+
       if($this->_config->get('jg_anchors')): ?>
   <a name="category"></a>
 <?php endif;
@@ -29,10 +41,10 @@
   <div class="jg_row jg_row<?php $this->i++; echo ($this->i % 2) + 1; ?>">
 <?php   for($col_count = 0; ($col_count < $column) && ($index < $count_pics); $col_count++):
           $row = $this->images[$index]; ?>
-    <div class="jg_element_cat">
+    <div class="jg_element_cat" style="height: 183px;">
       <div class="jg_imgalign_catimgs">
-        <a <?php echo $row->atagtitle; ?> href="<?php echo $row->link; ?>" class="jg_catelem_photo jg_catelem_photo_align">
-          <img src="<?php echo $row->thumb_src; ?>" class="jg_photo" <?php echo $row->imgwh; ?> alt="<?php echo $row->imgtitle; ?>" /></a>
+        <a <?php echo $row->atagtitle; ?> href="<?php echo $row->link; ?>" class="jg_catelem_photo jg_catelem_photo_align" style="background-image: url(<?php echo $row->thumb_src; ?>);">
+          </a>
       </div>
 <?php if($row->show_elems): ?>
       <div class="jg_catelem_txt">

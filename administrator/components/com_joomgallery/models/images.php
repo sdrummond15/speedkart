@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/administrator/components/com_joomgallery/models/images.php $
-// $Id: images.php 2015-03-23 $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -416,14 +414,15 @@ class JoomGalleryModelImages extends JoomGalleryModel
     // Loop through selected images
     foreach($ids as $cid)
     {
-      if(!$this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$cid))
+      $row->load($cid);
+
+      if(   !$this->_user->authorise('core.delete', _JOOM_OPTION.'.image.'.$cid)
+        && (!$this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.image.'.$cid) || !$row->owner || $row->owner != $this->_user->get('id')))
       {
         JLog::add(JText::plural('COM_JOOMGALLERY_IMGMAN_ERROR_DELETE_NOT_PERMITTED', 1), JLog::ERROR, 'jerror');
 
         continue;
       }
-
-      $row->load($cid);
 
       // Database query to check if there are other images which this
       // thumbnail is assigned to and how many of them exist
@@ -527,6 +526,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
         throw new RuntimeException(JText::sprintf('COM_JOOMGALLERY_MAIMAN_MSG_NOT_DELETE_IMAGE_DATA', $cid));
       }
 
+      JPluginHelper::importPlugin('content');
       $this->_mainframe->triggerEvent('onContentAfterDelete', array(_JOOM_OPTION.'.image', $row));
 
       // Image successfully deleted
@@ -592,6 +592,44 @@ class JoomGalleryModelImages extends JoomGalleryModel
         $count--;
       }
     }
+
+    // Convert tasks and states
+    switch($task)
+    {
+      case 'approve':
+        if($publish == 1)
+        {
+          // approved
+          $state = 4;
+        }
+        else
+        {
+          // not approved
+          $state = 3;
+        }
+        break;
+
+      case 'feature':
+        if($publish == 1)
+        {
+          // featured
+          $state = 6;
+        }
+        else
+        {
+          // not featured
+          $state = 5;
+        }
+        break;
+
+      default:
+        // publish
+        $state = $publish;
+        break;
+    }
+
+    JPluginHelper::importPlugin('content');
+    $this->_mainframe->triggerEvent('onContentChangeState', array(_JOOM_OPTION.'.image', $cid, $state));
 
     return $count;
   }
@@ -667,6 +705,8 @@ class JoomGalleryModelImages extends JoomGalleryModel
 
     $debugoutput = '';
 
+    $angle = 0;
+
     // Loop through selected images
     foreach($cids as $key => $cid)
     {
@@ -708,17 +748,22 @@ class JoomGalleryModelImages extends JoomGalleryModel
         {
           JFile::delete($thumb);
         }
-        $return = JoomFile::resizeImage($debugoutput,
-                                        $orig,
-                                        $thumb,
-                                        $this->_config->get('jg_useforresizedirection'),
-                                        $this->_config->get('jg_thumbwidth'),
-                                        $this->_config->get('jg_thumbheight'),
-                                        $this->_config->get('jg_thumbcreation'),
-                                        $this->_config->get('jg_thumbquality'),
-                                        false,
-                                        $this->_config->get('jg_cropposition')
-                                        );
+        $return = JoomIMGtools::resizeImage($debugoutput,
+                                            $orig,
+                                            $thumb,
+                                            $this->_config->get('jg_useforresizedirection'),
+                                            $this->_config->get('jg_thumbwidth'),
+                                            $this->_config->get('jg_thumbheight'),
+                                            $this->_config->get('jg_thumbcreation'),
+                                            $this->_config->get('jg_thumbquality'),
+                                            $this->_config->get('jg_cropposition'),
+                                            $angle,
+                                            $this->_config->get('jg_thumbautorot'),
+                                            false,
+                                            false,
+                                            true
+                                           );
+
         if(!$return)
         {
           JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_CREATE_THUMB', $thumb));
@@ -726,6 +771,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
           $this->_mainframe->setUserState('joom.recreate.thumbcount', null);
           $this->_mainframe->setUserState('joom.recreate.imgcount', null);
           $this->_mainframe->setUserState('joom.recreate.recreated', null);
+
           return false;
         }
 
@@ -742,17 +788,23 @@ class JoomGalleryModelImages extends JoomGalleryModel
         {
           JFile::delete($img);
         }
-        $return = JoomFile::resizeImage($debugoutput,
-                                        $orig,
-                                        $img,
-                                        false,
-                                        $this->_config->get('jg_maxwidth'),
-                                        false,
-                                        $this->_config->get('jg_thumbcreation'),
-                                        $this->_config->get('jg_picturequality'),
-                                        true,
-                                        0
-                                        );
+
+        $return = JoomIMGtools::resizeImage($debugoutput,
+                                            $orig,
+                                            $img,
+                                            $this->_config->get('jg_resizetomaxwidth'),
+                                            $this->_config->get('jg_maxwidth'),
+                                            $this->_config->get('jg_maxheight'),
+                                            $this->_config->get('jg_thumbcreation'),
+                                            $this->_config->get('jg_picturequality'),
+                                            false,
+                                            $angle,
+                                            $this->_config->get('jg_detailautorot'),
+                                            false,
+                                            true,
+                                            false
+                                           );
+
         if(!$return)
         {
           JError::raiseWarning(100, JText::sprintf('COM_JOOMGALLERY_IMGMAN_MSG_COULD_NOT_CREATE_IMG', $img));
@@ -760,6 +812,7 @@ class JoomGalleryModelImages extends JoomGalleryModel
           $this->_mainframe->setUserState('joom.recreate.thumbcount', null);
           $this->_mainframe->setUserState('joom.recreate.imgcount', null);
           $this->_mainframe->setUserState('joom.recreate.recreated', null);
+
           return false;
         }
 
@@ -767,6 +820,10 @@ class JoomGalleryModelImages extends JoomGalleryModel
         $recreated[$cid][] = 'img';
         $img_count++;
       }
+
+      // trigger Event "onJoomAfterRecreate($files,$orig_exists,$autorot)". Attached is an array with infos about the recreation
+      // files: path to the files; orig_exists: true, if original exists; autorot: is there auto rotation for the different image
+      $this->_mainframe->triggerEvent('onJoomAfterRecreate', array(array('original'=>$orig, 'detail'=>$img, 'thumbnail'=>$thumb), $orig_existent, array('original'=>$autorot_orig, 'detail'=>$autorot_det, 'thumbnail'=>$autorot_thumb) ));
 
       unset($cids[$key]);
 
@@ -788,6 +845,310 @@ class JoomGalleryModelImages extends JoomGalleryModel
     $this->_mainframe->setUserState('joom.recreate.recreated', null);
 
     return array($thumb_count, $img_count, $recreated);
+  }
+
+  /**
+   * Rotate selected images
+   *
+   * @return  mixed   Result information
+   *
+   * @since   3.4
+   */
+  public function rotate()
+  {
+    jimport('joomla.filesystem.file');
+
+    $cids             = $this->_mainframe->getUserStateFromRequest('joom.rotate.cids', 'cid', array(), 'array');
+    $rotateImageTypes = $this->_mainframe->getUserStateFromRequest('joom.rotate.imagetypes', 'rotateimagetypes', 1, 'int');
+    $rotateImageAngle = $this->_mainframe->getUserStateFromRequest('joom.rotate.imageangle', 'rotateimageangle', 90, 'int');
+
+    $thumb_count  = $this->_mainframe->getUserState('joom.rotate.thumbcount', count($cids));
+    $img_count    = $this->_mainframe->getUserState('joom.rotate.imgcount', count($cids));
+    $orig_count   = $this->_mainframe->getUserState('joom.rotate.origcount', $rotateImageTypes == 2 ? count($cids) : 0);
+    $debugoutput  = $this->_mainframe->getUserState('joom.rotate.debugoutput', '');
+    $firstLoop    = $this->_mainframe->getUserState('joom.rotate.firstloop', true);
+
+    // Before first loop check for selected images
+    if($firstLoop && !count($cids))
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
+
+      return false;
+    }
+
+    require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/refresher.php';
+
+    $refresher = new JoomRefresher(array('controller' => 'images', 'task' => 'rotate', 'remaining' => count($cids), 'start' => JRequest::getBool('cid')));
+
+    // Loop through selected images
+    foreach($cids as $key => $cid)
+    {
+      $orig  = $this->_ambit->getImg('orig_path', $cid);
+      $img   = $this->_ambit->getImg('img_path', $cid);
+      $thumb = $this->_ambit->getImg('thumb_path', $cid);
+      $err   = false;
+
+      if($rotateImageTypes == 2 && JFile::exists($orig))
+      {
+        if(JoomIMGtools::rotateImage($debugoutput,
+                                     $orig,
+                                     $orig,
+                                     $this->_config->get('jg_thumbcreation'),
+                                     $this->_config->get('jg_originalquality'),
+                                     $rotateImageAngle,
+                                     false,
+                                     true,
+                                     true
+                                    )
+          )
+        {
+          $orig_count--;
+
+          // Control, if the exif orientation of the original was set to 1 during upload (only if JPG)
+          if(exif_imagetype($orig) == IMAGETYPE_JPEG && extension_loaded('exif') && function_exists('exif_read_data'))
+          {
+            // Read EXIF data (only JPG)
+            $exif_tmp = exif_read_data($orig, null, 1);
+
+            if(isset($exif_tmp['IFD0']['Orientation']))
+            {
+              if($exif_tmp['IFD0']['Orientation'] != 1)
+              {
+                // Set exif orientation to 1
+                $meta_success = JoomIMGtools::copyImageMetadata($orig, $orig, 'JPG', 'JPG', 1, true);
+              }
+            }
+          }
+        }
+        else
+        {
+          $debugoutput .= JText::sprintf('COM_JOOMGALLERY_COMMON_ERROR_ROTATE_IMAGE', $orig).'<br />';
+          $err          = true;
+        }
+      }
+      else
+      {
+        if($rotateImageTypes == 2 && !JFile::exists($orig))
+        {
+          $debugoutput .= JText::sprintf('COM_JOOMGALLERY_ROTATE_NO_ORIG', $orig).'<br />';
+          $err          = true;
+        }
+      }
+
+      if($rotateImageTypes != 2 || ($rotateImageTypes == 2 && !$err))
+      {
+        // If there are no errors so far...
+        if($rotateImageTypes == 2)
+        {
+          // As we have a successfully rotated original we should use a resize here
+          if(JoomIMGtools::resizeImage($debugoutput,
+                                       $orig,
+                                       $img,
+                                       $this->_config->get('jg_resizetomaxwidth'),
+                                       $this->_config->get('jg_maxwidth'),
+                                       $this->_config->get('jg_maxheight'),
+                                       $this->_config->get('jg_thumbcreation'),
+                                       $this->_config->get('jg_picturequality'),
+                                       false,
+                                       0,
+                                       false,
+                                       false,
+                                       true,
+                                       false
+                                      )
+            )
+          {
+            $img_count--;
+          }
+          else
+          {
+            $debugoutput .= JText::sprintf('COM_JOOMGALLERY_COMMON_ERROR_ROTATE_IMAGE', $img).'<br />';
+            $err          = true;
+          }
+        }
+        else
+        {
+          if(JoomIMGtools::rotateImage($debugoutput,
+                                       $img,
+                                       $img,
+                                       $this->_config->get('jg_thumbcreation'),
+                                       $this->_config->get('jg_picturequality'),
+                                       $rotateImageAngle,
+                                       false,
+                                       false,
+                                       true
+                                      )
+            )
+          {
+            $img_count--;
+          }
+          else
+          {
+            $debugoutput .= JText::sprintf('COM_JOOMGALLERY_COMMON_ERROR_ROTATE_IMAGE', $img).'<br />';
+
+            // As the rotation of the detail image failed the thumb should be resized instead of rotated.
+            $err = true;
+          }
+        }
+
+        $tmpdebugoutput = '';
+
+        // As there is no original image available or original was not rotated, use detail image instead
+        if(!JFile::exists($orig) || $rotateImageTypes != 2)
+        {
+          $orig = $img;
+        }
+
+        // As we have a successfully rotated original or detail we should use a resize here to ensure the correct
+        // appearance according to the thumbnail conversion settings
+        $ret = JoomIMGtools::resizeImage($tmpdebugoutput,
+                                         $orig,
+                                         $thumb,
+                                         $this->_config->get('jg_useforresizedirection'),
+                                         $this->_config->get('jg_thumbwidth'),
+                                         $this->_config->get('jg_thumbheight'),
+                                         $this->_config->get('jg_thumbcreation'),
+                                         $this->_config->get('jg_thumbquality'),
+                                         $this->_config->get('jg_cropposition'),
+                                         0,
+                                         false,
+                                         false,
+                                         false,
+                                         true
+                                        );
+
+        if($ret)
+        {
+          $thumb_count--;
+        }
+        else
+        {
+          $debugoutput .= $tmpdebugoutput;
+          $debugoutput .= JText::sprintf('COM_JOOMGALLERY_COMMON_ERROR_ROTATE_IMAGE', $thumb).'<br />';
+          $err          = true;
+        }
+      }
+
+      // trigger Event "onJoomAfterRotate($files,$angle,$imgtypes)". Attached is an array with infos about the rotation
+      // files: path to the files; angle: the angle by which the images were rotated; imgtypes: 1(Thumbs and details), 2(All images)
+      $this->_mainframe->triggerEvent('onJoomAfterRotate', array(array('original'=>$orig, 'detail'=>$img, 'thumbnail'=>$thumb), $rotateImageAngle, $rotateimagetypes));
+
+      unset($cids[$key]);
+
+      // Check remaining time
+      if(!$refresher->check())
+      {
+        $this->_mainframe->setUserState('joom.rotate.cids', $cids);
+        $this->_mainframe->setUserState('joom.rotate.imagetypes', $rotateImageTypes);
+        $this->_mainframe->setUserState('joom.rotate.imageangle', $rotateImageAngle);
+        $this->_mainframe->setUserState('joom.rotate.thumbcount', $thumb_count);
+        $this->_mainframe->setUserState('joom.rotate.imgcount', $img_count);
+        $this->_mainframe->setUserState('joom.rotate.rotated', $orig_count);
+        $this->_mainframe->setUserState('joom.rotate.debugoutput', $debugoutput);
+        $this->_mainframe->setUserState('joom.rotate.firstloop', false);
+
+        $refresher->refresh(count($cids));
+      }
+    }
+
+    $this->_mainframe->setUserState('joom.rotate.cids', null);
+    $this->_mainframe->setUserState('joom.rotate.imagetypes', null);
+    $this->_mainframe->setUserState('joom.rotate.imageangle', null);
+    $this->_mainframe->setUserState('joom.rotate.thumbcount', null);
+    $this->_mainframe->setUserState('joom.rotate.imgcount', null);
+    $this->_mainframe->setUserState('joom.rotate.origcount', null);
+    $this->_mainframe->setUserState('joom.rotate.debugoutput', null);
+    $this->_mainframe->setUserState('joom.rotate.firstloop', null);
+
+    return array($thumb_count, $img_count, $orig_count, $debugoutput);
+  }
+
+  /**
+   * Search and replace information in selected images
+   *
+   * @return  mixed   Result information
+   *
+   * @since   3.6
+   */
+  public function replace()
+  {
+    // get Data
+    $cids       = $this->_mainframe->input->get('cid', array(), 'array');
+    $fields     = $this->_mainframe->input->get('batch_fields', array(), 'array');
+    $searchVal  = $this->_mainframe->input->get('batch_search', '', 'string');
+    $replaceVal = $this->_mainframe->input->get('batch_replace', '', 'string');
+
+    $nmb_imgs    = count($cids);  // Number of images to process
+    $nmb_rep     = 0;             // Number of performed replacements
+    $nmb_repimgs = 0;             // Number of images with performed replacements
+    $nmb_err     = 0;             // Number of error images
+    $erroroutput = '';
+    $firstLoop   = true;
+
+    // Before first loop check for selected images
+    if($firstLoop && !count($cids))
+    {
+      $this->setError(JText::_('COM_JOOMGALLERY_COMMON_MSG_NO_IMAGES_SELECTED'));
+
+      return false;
+    }
+
+    $row = $this->getTable('joomgalleryimages');
+
+    // Loop through selected images
+    foreach($cids as $i => $id)
+    {
+      // Reset JTable class
+      $row->reset();
+
+      // Read image from database
+      $row->load($id);
+
+      $tmp_rep = 0;
+      foreach($fields as $fieldname)
+      {
+        if($fieldname != 'additional')
+        {
+          $replacements = 0;
+
+          // Replace image informations
+          $row->{$fieldname} = str_replace($searchVal, $replaceVal, $row->{$fieldname}, $replacements);
+
+          // count replacements
+          $tmp_rep = $tmp_rep + $replacements;
+        }
+      }
+
+      // Make sure the record is valid
+      if(!$row->check())
+      {
+        $erroroutput .= 'Image (ID:' . $id . '):' . $row->getError() . '<br />';
+        $nmb_err      = $nmb_err + 1;
+
+        continue;
+      }
+
+      // Store the entry to the database
+      if(!$row->store())
+      {
+        $erroroutput .= 'Image (ID:' . $id . '):' . $row->getError() . '<br />';
+        $nmb_err      = $nmb_err + 1;
+
+        continue;
+      }
+
+      // Plugin event onJoomAfterSearchReplace
+      $this->_mainframe->triggerEvent('onJoomAfterSearchReplace', array($id, $searchVal, $replaceVal, $fields, &$tmp_rep));
+
+      // count image if there was a replacement
+      if($tmp_rep > 0)
+      {
+        $nmb_rep     = $nmb_rep + $tmp_rep;
+        $nmb_repimgs = $nmb_repimgs + 1;
+      }
+    }
+
+    return array('stats'=>array($nmb_imgs, $nmb_rep, $nmb_repimgs, $nmb_err), 'msg' => $erroroutput);
   }
 
   /**

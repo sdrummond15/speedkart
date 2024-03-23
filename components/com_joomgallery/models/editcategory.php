@@ -1,10 +1,8 @@
 <?php
-// $HeadURL: https://joomgallery.org/svn/joomgallery/JG-3/JG/trunk/components/com_joomgallery/models/editcategory.php $
-// $Id: editcategory.php 4405 2014-07-02 07:13:31Z chraneco $
 /****************************************************************************************\
 **   JoomGallery 3                                                                      **
 **   By: JoomGallery::ProjectTeam                                                       **
-**   Copyright (C) 2008 - 2013  JoomGallery::ProjectTeam                                **
+**   Copyright (C) 2008 - 2021  JoomGallery::ProjectTeam                                **
 **   Based on: JoomGallery 1.0.0 by JoomGallery::ProjectTeam                            **
 **   Released under GNU GPL Public License                                              **
 **   License: http://www.gnu.org/copyleft/gpl.html or have a look                       **
@@ -54,6 +52,9 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
     }
 
     $array = JRequest::getVar('catid',  0, '', 'array');
+
+    // Sanitize request inputs
+    JArrayHelper::toInteger($array, array($array));
 
     $this->setId($array[0]);
   }
@@ -268,7 +269,7 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
 
     // Creating a main category means creating
     // a category in ROOT category
-    if($data['parent_id'] == 0)
+    if($data['parent_id'] == 0 || $data['parent_id'] == "")
     {
       $data['parent_id'] = 1;
     }
@@ -315,6 +316,14 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
       {
         $this->_mainframe->redirect(JRoute::_('index.php?view=usercategories', false), JText::_('COM_JOOMGALLERY_EDITCATEGORY_MSG_NOT_ALLOWED_CREATE_MORE_USERCATEGORIES'), 'notice');
       }
+    }
+
+    // Trigger Event onJoomBeforeSave (Returnvalue: true or false)
+    // $row contains still the old values
+    $plugins = $this->_mainframe->triggerEvent('onJoomBeforeSave', array(_JOOM_OPTION.'.category', $row, $isNew, $data));
+    if(in_array(false, $plugins, true))
+    {
+      return false;
     }
 
     // Bind the form fields to the category table
@@ -440,6 +449,14 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
         if(!$row->check())
         {
           $this->setError($row->getError());
+          return false;
+        }
+
+        // Trigger Event onContentBeforeSave (Returnvalue: true or false)
+        JPluginHelper::importPlugin('content');
+        $plugins = $this->_mainframe->triggerEvent('onContentBeforeSave', array(_JOOM_OPTION.'.category', &$row, true, $data));
+        if(in_array(false, $plugins, true))
+        {
           return false;
         }
 
@@ -572,6 +589,14 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
       return false;
     }
 
+    // Trigger Event onContentBeforeSave (Returnvalue: true or false)
+    JPluginHelper::importPlugin('content');
+    $plugins = $this->_mainframe->triggerEvent('onContentBeforeSave', array(_JOOM_OPTION.'.category', &$row, false, $data));
+    if(in_array(false, $plugins, true))
+    {
+      return false;
+    }
+
     // Store the entry to the database
     if(!$row->store())
     {
@@ -597,7 +622,8 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
     $row->load($this->_id);
 
     // Check whether we are allowed to delete this category
-    if(!$this->_user->authorise('core.delete', _JOOM_OPTION.'.category.'.$this->_id))
+    if(   !$this->_user->authorise('core.delete', _JOOM_OPTION.'.category.'.$this->_id) 
+      && (!$this->_user->authorise('joom.delete.own', _JOOM_OPTION.'.category.'.$this->_id) || !$row->owner || $row->owner != $this->_user->get('id')))
     {
       throw new RuntimeException(JText::_('COM_JOOMGALLERY_CATEGORY_MSG_DELETE_NOT_PERMITTED'));
     }
@@ -956,6 +982,9 @@ class JoomGalleryModelEditcategory extends JoomGalleryModel
     {
       return false;
     }
+
+    JPluginHelper::importPlugin('content');
+    $this->_mainframe->triggerEvent('onCategoryChangeState', array(_JOOM_OPTION.'.category', $row->cid, $row->published));
 
     return true;
   }
